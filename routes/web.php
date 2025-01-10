@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dukcapil\CitizenController as DukcapilCitizenController;
 use App\Http\Controllers\Dukcapil\DocumentController as DukcapilDocumentController;
 use App\Http\Controllers\Citizen\DocumentController as CitizenDocumentController;
+use App\Http\Controllers\Citizen\DocumentFolderController as CitizenFolderController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Citizen\DocumentFolderController;
 
@@ -49,6 +50,7 @@ Route::resource('dukcapil/documents', DukcapilDocumentController::class)
     "destroy"=>"dukcapil.document.destroy"
 
 ]);
+Route::post('dukcapil/documents/generate', [DukcapilDocumentController::class, 'generate'])->name('dukcapil.document.generate');
 Route::resource('citizen/documents', CitizenDocumentController::class)
 ->parameters(["documents"=>"id"])
 ->names([
@@ -60,7 +62,6 @@ Route::resource('citizen/documents', CitizenDocumentController::class)
     "update"=>"citizen.document.update",
     "destroy"=>"citizen.document.destroy"
 ]);
-
 Route::resource('citizen/folders', DocumentFolderController::class)
 ->parameters(["folders"=>"id"])
 ->names([

@@ -19,7 +19,7 @@ class DocumentController extends Controller
     {
         return RequestHandler::handle(function() {
             $user = Auth::user();
-            $documents = $user->documents;
+            $documents = $user->userable->documents;
             return view('citizen.document.index', compact('documents'));
         });
     }

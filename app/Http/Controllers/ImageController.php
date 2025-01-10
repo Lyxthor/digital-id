@@ -59,6 +59,7 @@ class ImageController extends Controller
             // Simpan nama file ke database
             return response()->json([
                 "message"=>"success",
+                "filename"=>$fileName,
                 "success"=>true
             ], 200);
         }

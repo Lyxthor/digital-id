@@ -8,8 +8,8 @@ use App\Models\DocumentFolder;
 
 class Document extends Model
 {
-
-    public function document_type()
+    protected $guarded = ['id'];
+    public function type()
     {
         return $this->belongsTo(DocumentType::class, 'type_id', 'id');
     }

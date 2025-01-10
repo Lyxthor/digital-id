@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests\Dukcapil\Document;
 
-use App\Rules\CheckForDuplicatedDocument;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use App\Rules\CheckForDuplicatedDocument;
 use App\Helpers\RequestHandler;
 use App\Models\Citizen;
 
-class StoreDocumentRequest extends FormRequest
+class GenerateDocumentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,8 +28,7 @@ class StoreDocumentRequest extends FormRequest
         return
         [
             "owner_id"=>"required|exists:citizens,id",
-            "type_id"=>["required", "exists:document_types,id", new CheckForDuplicatedDocument($this->owner_id)],
-            'filename'=>["required"]
+            "type_id"=>["required", "exists:document_types,id", new CheckForDuplicatedDocument($this->owner_id)]
         ];
     }
     public function validated($key = null, $default = null)
@@ -40,7 +39,6 @@ class StoreDocumentRequest extends FormRequest
     }
     public function failedValidation(Validator $validator)
     {
-
         RequestHandler::redirect($validator->errors()->toArray());
     }
 }
