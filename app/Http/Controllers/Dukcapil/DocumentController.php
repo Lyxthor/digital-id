@@ -8,6 +8,7 @@ use App\Helpers\RequestHandler;
 use App\Http\Requests\Dukcapil\Document\IndexDocumentRequest;
 use App\Http\Requests\Dukcapil\Document\StoreDocumentRequest;
 use App\Http\Requests\Dukcapil\Document\UpdateDocumentRequest;
+use App\Http\Requests\Dukcapil\Document\GenerateDocumentRequest;
 use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\Citizen;
@@ -19,13 +20,17 @@ class DocumentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(IndexDocumentRequest $req)
+    public function index(Request $req)
     {
         return RequestHandler::handle(function() use($req) {
-            $validData = $req->validated();
-            $citizen = $validData['citizen'];
+            $citizen = Citizen::find($req->citizen);
+            if($citizen == null)
+            {
+                throw new Exception("Citizen not found", Response::HTTP_NOT_FOUND);
+                return;
+            }
             $documents = $citizen->documents;
-            return view('dukcapil.document.index', compact('documents'));
+            return view('dukcapil.document.index', compact('documents', 'citizen'));
         });
     }
 
@@ -45,6 +50,18 @@ class DocumentController extends Controller
             return view('dukcapil.document.create', compact('types', 'citizen'));
         });
     }
+    public function generate(GenerateDocumentRequest $req)
+    {
+        return RequestHandler::handle(function() use($req) {
+            $validData = $req->validated();
+            $citizen = $validData['citizen'];
+            $type_id = $validData['type_id'];
+            $type = DocumentType::find($type_id);
+            $type = implode("_", explode(" ", $type->name));
+            $type = strtolower($type);
+            return view("templates.$type", compact('citizen', 'type_id'));
+        });
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -54,25 +71,15 @@ class DocumentController extends Controller
         return RequestHandler::handle(function() use($req) {
             $validData = $req->validated();
             $citizen = $validData['citizen'];
-            //unset($validData['citizen']);
-            // save image logic here
-            $type = DocumentType::find($validData['type_id']);
-            $type = implode("_", explode(" ", $type->name));
-            $type = strtolower($type);
-            return view("templates.$type", compact('citizen'));
-            // $document = Document::create($validData);
+            $validData['documentable_id'] = 1;
+            unset($validData['citizen']);
+            Document::create($validData);
+            return redirect()
+            ->route('citizen.document.index')
+            ->with('success', 'document created successfully');
+        });
+    }
 
-            // return redirect()
-            // ->route('dukcapil.document.index')
-            // ->with('success', "Document $document->type->name for citizen $citizen->nik created successfully");
-        });
-    }
-    public function save(Request $req)
-    {
-        return RequestHandler::handle(function() use($req) {
-            $document = Document::create($req->all());
-        });
-    }
 
     /**
      * Display the specified resource.

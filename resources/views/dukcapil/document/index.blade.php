@@ -40,11 +40,7 @@
                             <div class="label">
                             <span class="label-text">Document Type</span>
                             </div>
-                            <select type="text" name="type_id" id="type_id" placeholder="Type here" class="input input-bordered w-full">
-                                @foreach ($types as $dt)
-                                    <option value="{{ $dt->id }}">{{ $dt->name }}</option>
-                                @endforeach
-                            </select>
+                            
                         </label>
                     </div>
 

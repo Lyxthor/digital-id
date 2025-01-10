@@ -9,6 +9,12 @@
     <title>Digiidalgo | @yield('title')</title>
 </head>
 <body>
+    <form action="{{ route('dukcapil.document.store') }}" method="post" id="document-store-form">
+        @csrf
+        <input type="hidden" name="type_id" id="type_id" value="{{ $type_id }}">
+        <input type="hidden" name="owner_id" id="owner_id" value="{{ $citizen->id }}">
+        <input type="hidden" name="filename" id="filename">
+    </form>
     <div class="container mx-auto w-3/4">
         @yield('content')
         <div class="w-full h-full absolute top-0 left-0 flex justify-center items-center">
