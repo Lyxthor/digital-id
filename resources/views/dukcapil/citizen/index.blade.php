@@ -79,8 +79,6 @@
             @else
 
             @endif
-
-
           </tbody>
           <tfoot>
             <tr>

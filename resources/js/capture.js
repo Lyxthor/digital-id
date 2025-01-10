@@ -23,7 +23,7 @@ document.getElementById('capture-btn').addEventListener('click', ()=>{
             console.error('Error:', error);
           });
         const hostname = window.hostname
-        window.location = `${hostname}/dukcapil/citizens`
+        window.location = `/${hostname}/dukcapil/citizens`
 
     }).catch(err => {
         console.error('Error capturing content:', err);
