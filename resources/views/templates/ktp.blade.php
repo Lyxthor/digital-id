@@ -6,7 +6,7 @@
     <div class="card-body">
         <div class="row flex justify-between">
             <div class="w-2/12">
-                <img src="{{ route('image.show', ['filename'=>$citizen->pp_img_path]) }}" class="bg-slate-500 w-full aspect-square rounded-full" />
+                <img src="{{ route('image.show', ['filename'=>$citizen->pp_img_path]) }}" class="bg-slate-500 w-full aspect-square rounded-full object-cover" />
             </div>
             <div class="w-9/12">
                 <table class="w-full text-2xl">

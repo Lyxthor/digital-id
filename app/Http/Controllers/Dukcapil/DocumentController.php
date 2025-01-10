@@ -67,6 +67,12 @@ class DocumentController extends Controller
             // ->with('success', "Document $document->type->name for citizen $citizen->nik created successfully");
         });
     }
+    public function save(Request $req)
+    {
+        return RequestHandler::handle(function() use($req) {
+            $document = Document::create($req->all());
+        });
+    }
 
     /**
      * Display the specified resource.

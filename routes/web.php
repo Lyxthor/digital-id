@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dukcapil\CitizenController as DukcapilCitizenController;
 use App\Http\Controllers\Dukcapil\DocumentController as DukcapilDocumentController;
+use App\Http\Controllers\Citizen\DocumentController as CitizenDocumentController;
 use App\Http\Controllers\ImageController;
 
 Route::get('/', function () {
@@ -12,8 +14,15 @@ Route::get('/', function () {
 Route::get('/invalid', function() {
 
 })->name('invalid.index');
+
+Route::get('/hashed_password/{password}', function($password) {
+    return bcrypt($password);
+});
 Route::get('image/{filename}', [ImageController::class, 'show'])->name('image.show');
 Route::post('image', [ImageController::class, 'store'])->name('image.store');
+// AUTH ROUTES
+Route::get('login', [AuthController::class, 'loginPage'])->name('login');
+Route::post('login', [AuthController::class, 'login'])->name('login.store');
 // DUKCAPIL ROUTES
 Route::resource('dukcapil/citizens', DukcapilCitizenController::class)
 ->parameters(["citizens"=>"id"])
@@ -36,4 +45,15 @@ Route::resource('dukcapil/documents', DukcapilDocumentController::class)
     "store"=>"dukcapil.document.store",
     "update"=>"dukcapil.document.update",
     "destroy"=>"dukcapil.document.destroy"
-]);;
+]);
+Route::resource('citizen/documents', CitizenDocumentController::class)
+->parameters(["documents"=>"id"])
+->names([
+    "index"=>"citizen.document.index",
+    "create"=>"citizen.document.create",
+    "edit"=>"citizen.document.edit",
+    "show"=>"citizen.document.show",
+    "store"=>"citizen.document.store",
+    "update"=>"citizen.document.update",
+    "destroy"=>"citizen.document.destroy"
+]);

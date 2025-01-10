@@ -9,14 +9,11 @@
     <title>Digiidalgo | @yield('title')</title>
 </head>
 <body>
-    <form action="{{ route('image.store') }}" id="form" method="POST" enctype="multipart/form-data">
-        @csrf
-        <input type="file" name="image" id="image">
-        <button type="submit">text</button>
-    </form>
     <div class="container mx-auto w-3/4">
         @yield('content')
-        <button id="capture-btn" class="absolute top-0 left-0">Save</button>
+        <div class="w-full h-full absolute top-0 left-0 flex justify-center items-center">
+            <button id="capture-btn" class="px-5 py-2 bg-blue-400 text-white rounded-md">Save</button>
+        </div>
     </div>
     <script>
 
