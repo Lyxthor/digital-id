@@ -15,6 +15,7 @@
         "vite": "^6.0"
     },
     "dependencies": {
+        "alpinejs": "^3.14.8",
         "daisyui": "^4.12.23",
         "html2canvas": "^1.4.1",
         "html2canvas-pro": "^1.5.8"

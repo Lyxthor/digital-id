@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dukcapil\CitizenController as DukcapilCitizenController;
 use App\Http\Controllers\Dukcapil\DocumentController as DukcapilDocumentController;
@@ -37,3 +38,6 @@ Route::resource('dukcapil/documents', DukcapilDocumentController::class)
     "update"=>"dukcapil.document.update",
     "destroy"=>"dukcapil.document.destroy"
 ]);;
+
+// DASHBOARD ROUTES
+Route::get('/dashboard/citizen', [DashboardController::class, 'citizenIndex'])->name('dashboard.citizen');
