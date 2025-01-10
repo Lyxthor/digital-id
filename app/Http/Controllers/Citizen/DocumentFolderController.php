@@ -25,7 +25,6 @@ class DocumentFolderController extends Controller
             return view('citizen.document_folder.index', compact('folders'));
         });
     }
-
     /**
      * Show the form for creating a new resource.
      */

@@ -8,6 +8,7 @@ use App\Http\Controllers\Dukcapil\DocumentController as DukcapilDocumentControll
 use App\Http\Controllers\Citizen\DocumentController as CitizenDocumentController;
 use App\Http\Controllers\Citizen\DocumentFolderController as CitizenFolderController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\Citizen\DocumentFolderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -61,7 +62,7 @@ Route::resource('citizen/documents', CitizenDocumentController::class)
     "update"=>"citizen.document.update",
     "destroy"=>"citizen.document.destroy"
 ]);
-Route::resource('citizen/folders', CitizenFolderController::class)
+Route::resource('citizen/folders', DocumentFolderController::class)
 ->parameters(["folders"=>"id"])
 ->names([
     "index"=>"citizen.folder.index",
@@ -72,7 +73,6 @@ Route::resource('citizen/folders', CitizenFolderController::class)
     "update"=>"citizen.folder.update",
     "destroy"=>"citizen.folder.destroy"
 ]);
-
 
 // DASHBOARD ROUTES
 Route::get('/dashboard/citizen', [DashboardController::class, 'citizenIndex'])->name('dashboard.citizen');
