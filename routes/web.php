@@ -7,6 +7,7 @@ use App\Http\Controllers\Dukcapil\CitizenController as DukcapilCitizenController
 use App\Http\Controllers\Dukcapil\DocumentController as DukcapilDocumentController;
 use App\Http\Controllers\Citizen\DocumentController as CitizenDocumentController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\Citizen\DocumentFolderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -58,6 +59,18 @@ Route::resource('citizen/documents', CitizenDocumentController::class)
     "store"=>"citizen.document.store",
     "update"=>"citizen.document.update",
     "destroy"=>"citizen.document.destroy"
+]);
+
+Route::resource('citizen/folders', DocumentFolderController::class)
+->parameters(["folders"=>"id"])
+->names([
+    "index"=>"citizen.folder.index",
+    "create"=>"citizen.folder.create",
+    "edit"=>"citizen.folder.edit",
+    "show"=>"citizen.folder.show",
+    "store"=>"citizen.folder.store",
+    "update"=>"citizen.folder.update",
+    "destroy"=>"citizen.folder.destroy"
 ]);
 
 
