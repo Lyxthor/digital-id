@@ -10,4 +10,8 @@ class DashboardController extends Controller
         return view('citizen.dashboard');
     }
 
+    public function dukcapilIndex(){
+        return view('dukcapil.dashboard');
+    }
+
 }

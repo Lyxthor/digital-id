@@ -76,3 +76,4 @@ Route::resource('citizen/folders', DocumentFolderController::class)
 
 // DASHBOARD ROUTES
 Route::get('/dashboard/citizen', [DashboardController::class, 'citizenIndex'])->name('dashboard.citizen');
+Route::get('/dashboard/dukcapil', [DashboardController::class, 'dukcapilIndex'])->name('dashboard.dukcapil');
