@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dukcapil\CitizenController as DukcapilCitizenController;
 use App\Http\Controllers\Dukcapil\DocumentController as DukcapilDocumentController;
@@ -45,6 +46,7 @@ Route::resource('dukcapil/documents', DukcapilDocumentController::class)
     "store"=>"dukcapil.document.store",
     "update"=>"dukcapil.document.update",
     "destroy"=>"dukcapil.document.destroy"
+
 ]);
 Route::resource('citizen/documents', CitizenDocumentController::class)
 ->parameters(["documents"=>"id"])
@@ -57,3 +59,8 @@ Route::resource('citizen/documents', CitizenDocumentController::class)
     "update"=>"citizen.document.update",
     "destroy"=>"citizen.document.destroy"
 ]);
+
+
+
+// DASHBOARD ROUTES
+Route::get('/dashboard/citizen', [DashboardController::class, 'citizenIndex'])->name('dashboard.citizen');
