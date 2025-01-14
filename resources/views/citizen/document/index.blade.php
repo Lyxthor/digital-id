@@ -24,6 +24,9 @@
                         <th>{{ $index++ }}</th>
                         <td>{{ $doc->type->name }}</td>
                         <td>
+                            {{ $doc->updated_at }}
+                        </td>
+                        <td>
                             <div x-data="{ isOpen: false }">
                                 <button x-on:click="isOpen = true">
                                     show document
@@ -31,7 +34,6 @@
                                 <div class="modal-container fixed w-screen z-50 h-screen top-0 left-0 bg-slate-800 bg-opacity-55"
                                 x-show="isOpen"
                                 x-transition.opacity
-
                                 x-on:click="isOpen = false">
                                     <div id="modal{{ $index }}" class="h-full">
                                         <div class="modal-body h-full flex justify-center items-center">
@@ -40,7 +42,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </td>
                     </tr>
                 @endforeach

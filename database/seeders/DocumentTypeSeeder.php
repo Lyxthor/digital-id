@@ -15,22 +15,22 @@ class DocumentTypeSeeder extends Seeder
     [
         [
             "name"=>"KTP",
-            "category"=>"protected",
-            "multiability"=>"singular"
+            "category"=>"official",
+            "multiability"=>"mono"
         ],
         [
             "name"=>"Akta Kelahiran",
-            "category"=>"protected",
-            "multiability"=>"singular"
+            "category"=>"official",
+            "multiability"=>"mono"
         ],
         [
             "name"=>"Kartu Keluarga",
-            "category"=>"protected",
-            "multiability"=>"singular"
+            "category"=>"official",
+            "multiability"=>"mono"
         ],
         [
             "name"=>"Surat Cerai",
-            "category"=>"protected",
+            "category"=>"official",
             "multiability"=>"multi"
         ]
     ];
