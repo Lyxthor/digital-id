@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use App\Helpers\RequestHandler;
 use App\Models\Citizen;
+use App\Models\DocumentType;
 
 class StoreDocumentRequest extends FormRequest
 {
@@ -28,6 +29,9 @@ class StoreDocumentRequest extends FormRequest
         return
         [
             "owner_id"=>"required|exists:citizens,id",
+            "members"=>"required|array|min:1",
+            "members.*.id"=>"required|exists:citizens,id",
+            "members.*.role"=>"required",
             "type_id"=>["required", "exists:document_types,id", new CheckForDuplicatedDocument($this->owner_id)],
             'filename'=>["required"]
         ];
@@ -35,7 +39,9 @@ class StoreDocumentRequest extends FormRequest
     public function validated($key = null, $default = null)
     {
         $validatedData = parent::validated();
-        $validatedData['citizen'] = Citizen::find($this->owner_id);
+        $type = DocumentType::select(['name'])->find($this->type_id);
+        $validatedData['name'] = $type->name;
+        $validatedData['owner'] = Citizen::find($this->owner_id);
         return $validatedData;
     }
     public function failedValidation(Validator $validator)

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('username')->unique();
             $table->string('email')->unique();
+            $table->string('mobile')->unique();
             $table->string('password');
             $table->unsignedBigInteger('userable_id');
             $table->enum('userable_type', ['citizen', 'dukcapil']);

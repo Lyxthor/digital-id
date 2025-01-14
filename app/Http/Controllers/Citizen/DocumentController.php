@@ -19,7 +19,8 @@ class DocumentController extends Controller
     {
         return RequestHandler::handle(function() {
             $user = Auth::user();
-            $documents = $user->userable->documents;
+            $id = $user->userable_id;
+            $documents = Document::ownership($id)->get();
             return view('citizen.document.index', compact('documents'));
         });
     }

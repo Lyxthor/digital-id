@@ -20,9 +20,10 @@ return new class extends Migration
             $table->string('birth_place');
             $table->text('current_address');
             $table->string('blood_type')->nullable()->default('-');
+            $table->string('religion')->nullable()->default('katholik');
+            $table->string('education')->nullable()->default('belum/tidak sekolah');
             $table->string('job')->nullable()->default('serabutan');
             $table->string('pp_img_path');
-            $table->string('no_kk');
             $table->timestamps();
         });
     }

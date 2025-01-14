@@ -26,6 +26,16 @@ class CitizenController extends Controller
             return view('dukcapil.citizen.index', compact('citizens', 'date'));
         });
     }
+    public function search(Request $req)
+    {
+        return RequestHandler::handle(function() use($req) {
+            $citizens = Citizen::select(['id', 'nik', 'name', 'pp_img_path'])
+            ->where('nik', 'LIKE', '%'.$req->nik.'%')->get();
+            return response()->json([
+                'citizens'=>$citizens
+            ], 200);
+        });
+    }
     public function create()
     {
         return RequestHandler::handle(function() {

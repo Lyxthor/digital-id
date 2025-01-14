@@ -12,8 +12,11 @@ use App\Http\Requests\Dukcapil\Document\GenerateDocumentRequest;
 use App\Models\Document;
 use App\Models\DocumentType;
 use App\Models\Citizen;
+use App\Models\SocialUnit;
 use Illuminate\Http\Response;
 use Exception;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class DocumentController extends Controller
 {
@@ -37,29 +40,32 @@ class DocumentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $req)
+    public function create()
     {
-        return RequestHandler::handle(function() use($req) {
-            $citizen = Citizen::find($req->citizen);
-            if($citizen == null)
-            {
-                throw new Exception("Citizen not found", Response::HTTP_NOT_FOUND);
-                return;
-            }
-            $types = DocumentType::select(['id', 'name'])->where('category', 'protected')->get();
-            return view('dukcapil.document.create', compact('types', 'citizen'));
+        return RequestHandler::handle(function() {
+            // $citizen = Citizen::find($req->citizen);
+            // if($citizen == null)
+            // {
+            //     throw new Exception("Citizen not found", Response::HTTP_NOT_FOUND);
+            //     return;
+            // }
+            $types = DocumentType::select(['id', 'name'])->where('category', 'official')->get();
+            return view('dukcapil.document.create', compact('types'));
         });
     }
     public function generate(GenerateDocumentRequest $req)
     {
         return RequestHandler::handle(function() use($req) {
             $validData = $req->validated();
-            $citizen = $validData['citizen'];
-            $type_id = $validData['type_id'];
-            $type = DocumentType::find($type_id);
-            $type = implode("_", explode(" ", $type->name));
-            $type = strtolower($type);
-            return view("templates.$type", compact('citizen', 'type_id'));
+            $members = $validData['members'];
+            $owner = $validData['owner'];
+            $type = $validData['type'];
+            $additional = $validData['additional'];
+
+            $templateName = implode("_", explode(" ", $type->name));
+            $templateName = strtolower($templateName);
+
+            return view("templates.$templateName", compact('members', 'owner', 'type', 'additional'));
         });
     }
 
@@ -70,10 +76,32 @@ class DocumentController extends Controller
     {
         return RequestHandler::handle(function() use($req) {
             $validData = $req->validated();
-            $citizen = $validData['citizen'];
-            $validData['documentable_id'] = 1;
-            unset($validData['citizen']);
-            Document::create($validData);
+            $socialUnitData = Arr::only($validData, ["owner_id"]);
+            $documentData = Arr::only($validData, ["filename", "type_id", "name"]);
+
+            $members = $validData['members'];
+            unset($validData['members']);
+
+            DB::beginTransaction();
+            $socialUnit = SocialUnit::create($socialUnitData);
+            $documentData['unit_id'] = $socialUnit->id;
+            $document = Document::create($documentData);
+
+            try
+            {
+                foreach($members as $m)
+                {
+                    $document->members()->attach($m['id'], ['role'=>$m['role']]);
+                }
+                DB::commit();
+            }
+            catch(\Exception $e)
+            {
+                DB::rollBack();
+                throw new Exception($e->getMessage(), 500);
+            }
+
+
             return redirect()
             ->route('citizen.document.index')
             ->with('success', 'document created successfully');

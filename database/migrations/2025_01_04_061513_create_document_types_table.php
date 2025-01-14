@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('document_types', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->enum('category', ['protected', 'public']);
-            $table->enum('multiability', ['singular', 'multi']);
+            $table->enum('category', ['official', 'custom']);
+            $table->enum('multiability', ['mono', 'multi']);
             $table->timestamps();
         });
     }

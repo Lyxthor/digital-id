@@ -17,8 +17,18 @@ class Document extends Model
     {
         return $this->belongsToMany(DocumentFolder::class, 'document_folder_assignments');
     }
-    public function owner()
+    public function unit_owner()
     {
-        return $this->belongsTo(Citizen::class, 'owner_id', 'id');
+        return $this->belongsTo(SocialUnit::class, 'unit_id', 'id');
+    }
+    // public function members()
+    // {
+    //     return $this->belongsToMany(Citizen::class, 'social_unit_citizens', 'unit_id', 'citizen_id', 'id', 'id');
+    // }
+    public function scopeOwnership($query, $citizenId)
+    {
+        return $query->whereHas('unit_owner.citizens', function($query) use($citizenId) {
+            return $query->where('citizens.id', $citizenId);
+        });
     }
 }

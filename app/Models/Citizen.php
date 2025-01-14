@@ -12,8 +12,14 @@ class Citizen extends Model
     {
         return $this->morphOne(User::class, 'userable', 'userable_type', 'userable_id');
     }
-    public function documents()
+    public function social_units()
     {
-        return $this->hasMany(Document::class, 'owner_id', 'id');
+        return $this->belongsToMany(SocialUnit::class, 'social_unit_citizens', 'citizen_id', 'unit_id', 'id', 'id');
     }
+    public function scopeDocuments($query, $id)
+    {
+        return $query->with(['social_units.document'])->where('id', $id);
+    }
+
+
 }

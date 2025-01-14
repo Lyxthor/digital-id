@@ -38,6 +38,8 @@ Route::resource('dukcapil/citizens', DukcapilCitizenController::class)
     "update"=>"dukcapil.citizen.update",
     "destroy"=>"dukcapil.citizen.destroy"
 ]);
+Route::post('dukcapil/citizen/search', [DukcapilCitizenController::class, 'search'])
+->name('dukcapil.citizen.search');
 Route::resource('dukcapil/documents', DukcapilDocumentController::class)
 ->parameters(["documents"=>"id"])
 ->names([

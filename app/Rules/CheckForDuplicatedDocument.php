@@ -6,6 +6,7 @@ use App\Models\Citizen;
 use App\Models\DocumentType;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
+use App\Models\Document;
 
 class CheckForDuplicatedDocument implements ValidationRule
 {
@@ -23,11 +24,10 @@ class CheckForDuplicatedDocument implements ValidationRule
     {
         $citizen = $this->citizen;
         if($citizen == null) return;
-        $documents = $citizen->documents;
-        if($documents == null) return;
+        $documents = Document::ownership($citizen->id);
         $type = DocumentType::find($value);
         $multiability = $type->multiability;
-        if($multiability == "singular")
+        if($multiability == "mono")
         {
             $docAlreadyExist = $documents->where('type_id', $value)->isNotEmpty();
             if($docAlreadyExist)
