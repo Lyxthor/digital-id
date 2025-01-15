@@ -29,9 +29,9 @@ class StoreDocumentRequest extends FormRequest
         return
         [
             "owner_id"=>"required|exists:citizens,id",
-            "members"=>"required|array|min:1",
-            "members.*.id"=>"required|exists:citizens,id",
-            "members.*.role"=>"required",
+            "memberships"=>"required|array|min:1",
+            "memberships.*.id"=>"required|exists:citizens,id",
+            "memberships.*.role"=>"required",
             "type_id"=>["required", "exists:document_types,id", new CheckForDuplicatedDocument($this->owner_id)],
             'filename'=>["required"]
         ];

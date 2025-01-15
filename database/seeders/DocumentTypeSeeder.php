@@ -16,22 +16,30 @@ class DocumentTypeSeeder extends Seeder
         [
             "name"=>"KTP",
             "category"=>"official",
-            "multiability"=>"mono"
+            "ownership_count"=>"mono",
+            "membership_count"=>"mono",
+            "member_ownership"=>"main"
         ],
         [
             "name"=>"Akta Kelahiran",
             "category"=>"official",
-            "multiability"=>"mono"
+            "ownership_count"=>"mono",
+            "membership_count"=>"multi",
+            "member_ownership"=>"main"
         ],
         [
             "name"=>"Kartu Keluarga",
             "category"=>"official",
-            "multiability"=>"mono"
+            "ownership_count"=>"mono",
+            "membership_count"=>"multi",
+            "member_ownership"=>"all"
         ],
         [
             "name"=>"Surat Cerai",
             "category"=>"official",
-            "multiability"=>"multi"
+            "ownership_count"=>"multi",
+            "membership_count"=>"multi",
+            "member_ownership"=>"all"
         ]
     ];
     public function run(): void

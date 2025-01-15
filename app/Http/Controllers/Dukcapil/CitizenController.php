@@ -146,7 +146,7 @@ class CitizenController extends Controller
 
         $fileContent = file_get_contents($file);
         $encryptedContent = ImageCipherHelper::encrypt($fileContent); // Enkripsi konten file
-        $fileName = TextCipherHelper::encrypt($file, env('ENCRIPTION_KEY')); // Nama file hash dengan ekstensi
+        $fileName = TextCipherHelper::encrypt($file, env('ENCRYPTION_KEY')); // Nama file hash dengan ekstensi
         $fileName = $generateHashedName($file);
         // Simpan file terenkripsi ke path tujuan
         Storage::disk('public')->put("images/$fileName", $encryptedContent);

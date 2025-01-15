@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('social_units', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('owner_id');
-            
             $table->timestamps();
         });
     }

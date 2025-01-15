@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Citizen;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Helpers\RequestHandler;
-use App\Http\Requests\Citizen\StoreDocumentFolder;
+use App\Http\Requests\Citizen\Folder\StoreFolderRequest;
+use App\Http\Requests\Citizen\Folder\UpdateFolderRequest;
 use App\Http\Requests\Dukcapil\Document\UpdateDocumentRequest;
 use App\Models\DocumentFolder;
 use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Document;
 
 class DocumentFolderController extends Controller
 {
@@ -21,7 +23,7 @@ class DocumentFolderController extends Controller
     {
         return RequestHandler::handle(function() {
             $user = Auth::user();
-            $folders = $user->folders;
+            $folders = $user->userable->folders;
             return view('citizen.document_folder.index', compact('folders'));
         });
     }
@@ -32,7 +34,7 @@ class DocumentFolderController extends Controller
     {
         return RequestHandler::handle(function() {
             $user = Auth::user();
-            $documents = $user->documents;
+            $documents = $user->userable->documents;
             return view('citizen.document_folder.create', compact('documents'));
         });
     }
@@ -40,18 +42,15 @@ class DocumentFolderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDocumentFolder $req)
+    public function store(StoreFolderRequest $req)
     {
         //
         return RequestHandler::handle(function() use($req) {
             $validData = $req->validated();
-            $documents = $validData['documents'];
-            unset($validData['documents']);
             $folder = DocumentFolder::create($validData);
-            $folder->documents()->sync($documents);
 
             return redirect()
-            ->route('citizen.document_folder.index')
+            ->back()
             ->with('success', 'Documents folder created successfully');
         });
     }
@@ -68,7 +67,6 @@ class DocumentFolderController extends Controller
                 throw new Exception("Folder not found", Response::HTTP_NOT_FOUND);
                 return;
             }
-
             return view('citizen.document_folder.show', compact('folder'));
         });
     }
@@ -79,7 +77,7 @@ class DocumentFolderController extends Controller
     public function edit(string $id)
     {
         return RequestHandler::handle(function() use($id) {
-            $folder = DocumentFolder::with(['documents'])->find($id);
+            $folder = DocumentFolder::with('documents')->find($id);
             if($folder == null)
             {
                 throw new Exception("Folder not found", Response::HTTP_NOT_FOUND);
@@ -87,7 +85,10 @@ class DocumentFolderController extends Controller
             }
 
             $user = Auth::user();
-            $documents = $user->documents;
+            $citizenId = $user->userable_id;
+            $folderId = $folder->id;
+
+            $documents = Document::ownership($citizenId)->get();
 
             return view('citizen.document_folder.edit', compact('folder', 'documents'));
         });
@@ -96,7 +97,7 @@ class DocumentFolderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDocumentRequest $req, string $id)
+    public function update(UpdateFolderRequest $req, $id)
     {
         return RequestHandler::handle(function() use($req, $id) {
             $folder = DocumentFolder::with(['documents'])->find($id);
@@ -107,13 +108,13 @@ class DocumentFolderController extends Controller
             }
 
             $validData = $req->validated();
-            $documents = $validData['documents'];
-            unset($validData['documents']);
+            $documents = $validData['document_ids'];
+            unset($validData['document_ids']);
             $folder->update($validData);
             $folder->documents()->sync($documents);
 
             return redirect()
-            ->route('citizen.document_folder.index')
+            ->back()
             ->with('success', 'Documents folder updated successfully');
         });
     }

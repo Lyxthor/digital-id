@@ -40,7 +40,7 @@
                             <div class="label">
                             <span class="label-text">Document Type</span>
                             </div>
-                            
+
                         </label>
                     </div>
 
