@@ -112,7 +112,7 @@
         newLi.setAttribute('class', "p-3 rounded-md")
         newLi.innerHTML+=`
         <div class="flex items-center justify-between">
-            <input type='hidden' name='members[${index}][id]' value='${data.id}'>
+            <input type='hidden' name='memberships[${index}][id]' value='${data.id}'>
             <div>
                 <div class='font-semibold'>${data.name}</div>
                 <div class='font-thin text-xs'>${data.nik}</div>
@@ -120,7 +120,7 @@
             <div class="join text-black">
                 <label class="input input-sm input-bordered flex items-center gap-2 join-item">
                     <span class="font-semibold">Role</span>
-                    <input type="text" name='members[${index}][role]' class="grow text-xs text-slate-600" placeholder="NA" />
+                    <input type="text" name='memberships[${index}][role]' class="grow text-xs text-slate-600" placeholder="NA" />
                 </label>
                 <button type="button" class="btn btn-sm btn-error aspect-square join-item">
                     x

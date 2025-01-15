@@ -9,13 +9,13 @@
     <title>Digiidalgo | @yield('title')</title>
 </head>
 <body>
-    <div id="members-data" data-collection='@json($members)'></div>
+    <div id="memberships-data" data-collection='@json($memberships)'></div>
     <form action="{{ route('dukcapil.document.store') }}" method="post" id="document-store-form">
         @csrf
         <input type="hidden" name="type_id" id="type_id" value="{{ $type->id }}">
         <input type="hidden" name="owner_id" id="owner_id" value="{{ $owner->id }}">
         <input type="hidden" name="filename" id="filename">
-        
+
     </form>
     <div class="container mx-auto w-3/4">
         @yield('content')

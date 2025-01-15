@@ -58,6 +58,7 @@ class DocumentController extends Controller
         return RequestHandler::handle(function() use($req) {
             $validData = $req->validated();
             $members = $validData['members'];
+            $memberships = $validData['memberships'];
             $owner = $validData['owner'];
             $type = $validData['type'];
             $additional = $validData['additional'];
@@ -65,7 +66,7 @@ class DocumentController extends Controller
             $templateName = implode("_", explode(" ", $type->name));
             $templateName = strtolower($templateName);
 
-            return view("templates.$templateName", compact('members', 'owner', 'type', 'additional'));
+            return view("templates.$templateName", compact('memberships', 'members', 'owner', 'type', 'additional'));
         });
     }
 
@@ -79,8 +80,8 @@ class DocumentController extends Controller
             $socialUnitData = Arr::only($validData, ["owner_id"]);
             $documentData = Arr::only($validData, ["filename", "type_id", "name"]);
 
-            $members = $validData['members'];
-            unset($validData['members']);
+            $memberships = $validData['memberships'];
+            unset($validData['memberships']);
 
             DB::beginTransaction();
             $socialUnit = SocialUnit::create($socialUnitData);
@@ -89,9 +90,9 @@ class DocumentController extends Controller
 
             try
             {
-                foreach($members as $m)
+                foreach($memberships as $m)
                 {
-                    $document->members()->attach($m['id'], ['role'=>$m['role']]);
+                    $socialUnit->citizens()->attach($m['id'], ['role'=>$m['role']]);
                 }
                 DB::commit();
             }

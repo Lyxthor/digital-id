@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('token_authorized_users', function (Blueprint $table) {
+        Schema::create('token_authorized_citizens', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('token_id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('citizen_id');
 
             $table->foreign('token_id')
             ->references('id')
@@ -22,9 +22,9 @@ return new class extends Migration
             ->onDelete('cascade')
             ->onUpdate('cascade');
 
-            $table->foreign('user_id')
+            $table->foreign('citizen_id')
             ->references('id')
-            ->on('users')
+            ->on('citizens')
             ->onDelete('cascade')
             ->onUpdate('cascade');
             $table->timestamps();
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('token_authorized_users');
+        Schema::dropIfExists('token_authorized_citizens');
     }
 };

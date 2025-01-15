@@ -13,9 +13,17 @@ return new class extends Migration
     {
         Schema::create('document_folder_tokens', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('token')->unique();
-            $table->enum('accessibility', ['private', 'public', 'restricted']);
+            $table->enum('accessibility', ['public', 'restricted']);
             $table->datetime('expires_at')->nullable();
+            $table->unsignedBigInteger('folder_id');
+
+            $table->foreign('folder_id')
+            ->references('id')
+            ->on('document_folders')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
             $table->timestamps();
         });
     }

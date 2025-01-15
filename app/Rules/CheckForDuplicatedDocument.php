@@ -24,17 +24,47 @@ class CheckForDuplicatedDocument implements ValidationRule
     {
         $citizen = $this->citizen;
         if($citizen == null) return;
-        $documents = Document::ownership($citizen->id);
+        $documents = Document::with('unit_owner')
+        ->ownership($citizen->id)
+        ->where('type_id', $value)
+        ->get();
         $type = DocumentType::find($value);
-        $multiability = $type->multiability;
-        if($multiability == "mono")
+        $ownershipCount = $type->ownership_count;
+        if($ownershipCount == "mono")
         {
-            $docAlreadyExist = $documents->where('type_id', $value)->isNotEmpty();
-            if($docAlreadyExist)
+            if($documents->isNotEmpty())
             {
-                $fail("Document $type->name should be just one document");
-                return;
+                $ownershipLimit = $this->CheckOwnershipLimit($documents, $citizen);
+                if($ownershipLimit)
+                {
+                    $fail("Citizen $citizen->nik can only have one document of $type->name type");
+                    return;
+                }
+                // TAMBAHKAN checkOwnerShip document, jika citizen adalah pemilik dari dokumen ini dan
+                // document hanya mengizinkan satu buah document untuk owner maka gagalkan validasi
+            }
+
+            // buat juga field baru untuk jumlah ownership document
+        }
+    }
+    public function CheckOwnershipLimit($documents, $citizen)
+    {
+        foreach($documents as $doc)
+        {
+            $isForMain = $doc->type->member_ownership == "main";
+            $isForAll = $doc->type->member_ownership == "all";
+            if($isForAll)
+            {
+                return true;
+            }
+            if($isForMain)
+            {
+                if($doc->unit_owner->owner_id == $citizen->id)
+                {
+                    return true;
+                }
             }
         }
+        return false;
     }
 }

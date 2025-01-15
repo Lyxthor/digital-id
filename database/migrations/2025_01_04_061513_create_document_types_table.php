@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->enum('category', ['official', 'custom']);
-            $table->enum('multiability', ['mono', 'multi']);
+            $table->enum('ownership_count', ['mono', 'multi']); // berapa banyak dokumen dengan type yang sama dapat dimiliki
+            $table->enum('membership_count', ['mono', 'multi']);
+            $table->enum('member_ownership', ['main', 'all']); // siapa saja pemilik dari dokumen ini
             $table->timestamps();
         });
     }
