@@ -9,6 +9,15 @@ use App\Models\DocumentFolder;
 class Document extends Model
 {
     protected $guarded = ['id'];
+
+    protected $fillable = [
+        'type_id',
+        'unit_id',
+        'title',
+        'description',
+        'file_path',
+    ];
+
     public function type()
     {
         return $this->belongsTo(DocumentType::class, 'type_id', 'id');

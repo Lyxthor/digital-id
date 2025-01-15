@@ -22,6 +22,7 @@ class DocumentFolderController extends Controller
     public function index()
     {
         return RequestHandler::handle(function() {
+            $folders = DocumentFolder::all();
             $user = Auth::user();
             $folders = $user->userable->folders;
             return view('citizen.document_folder.index', compact('folders'));
