@@ -47,7 +47,6 @@ class TokenAuthorizedCitizen
                 {
                     if($token->accessibility == 'restricted')
                     {
-
                         if($token->authorized_citizens->where('id', $citizen->id)->isNotEmpty())
                         {
                             return $next($request);
@@ -58,8 +57,11 @@ class TokenAuthorizedCitizen
                         return $next($request);
                     }
                 }
-                dd("token expired");
-                return back()->with('error', 'token expired');
+                else
+                {
+                    dd("token expired");
+                    return back()->with('error', 'token expired');
+                }
             }
         }
         dd("unauthorized citizen");
