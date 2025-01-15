@@ -26,6 +26,7 @@ Route::post('image', [ImageController::class, 'store'])->name('image.store');
 // AUTH ROUTES
 Route::get('login', [AuthController::class, 'loginPage'])->name('login');
 Route::post('login', [AuthController::class, 'login'])->name('login.store');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 // DUKCAPIL ROUTES
 Route::resource('dukcapil/citizens', DukcapilCitizenController::class)
 ->parameters(["citizens"=>"id"])

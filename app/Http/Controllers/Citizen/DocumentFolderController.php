@@ -20,8 +20,9 @@ class DocumentFolderController extends Controller
     public function index()
     {
         return RequestHandler::handle(function() {
-            $user = Auth::user();
-            $folders = $user->folders;
+            // $user = Auth::user();
+            // $folders = $user->folders;
+            $folders = DocumentFolder::all();
             return view('citizen.document_folder.index', compact('folders'));
         });
     }

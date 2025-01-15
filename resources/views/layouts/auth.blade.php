@@ -8,8 +8,8 @@
     <title>Digiidalgo | @yield('title')</title>
 </head>
 <body>
-    <div class="container mx-auto w-3/4">
+    {{-- <div class="container mx-auto w-3/4"> --}}
         @yield('content')
-    </div>
+    {{-- </div> --}}
 </body>
 </html>

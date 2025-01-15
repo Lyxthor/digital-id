@@ -2,27 +2,44 @@
 @section('title', 'login')
 
 @section('content')
-<div class="container flex justify-center mx-auto">
-    <div class="w-1/3 flex justify-center">
-        <div class="card shadow-xl pt-5">
-            <form action="{{ route('login.store') }}" method="post">
+<div class="bg-gray-100 h-screen flex items-center justify-center">
+    <div class="flex w-full max-w-4xl shadow-lg rounded-lg overflow-hidden">
+        <!-- Bagian Kiri -->
+        <div class="w-1/2 bg-white flex flex-col items-center justify-center p-6">
+            <img src="{{ asset('image/DIGIID 3.png') }}" alt="Logo" class="w-full h-auto mb-4">
+            <h1 class="text-2xl font-bold">DIGIID</h1>
+            <p class="text-gray-600 mt-2">Digital Identitas Indonesia</p>
+        </div>
+
+        <!-- Bagian Kanan -->
+        <div class="w-1/2 bg-[#124868] text-white p-6 flex flex-col justify-center">
+            <form action="{{ route('login.store') }}" method="post" class="space-y-6">
                 @csrf
-                <div class="card-header pt-5 px-5">
-                    <h1 class="font-bold text-center">Sign-in</h1>
+                <!-- Input Nama Lengkap -->
+                <div class="form-control w-full">
+                    <label for="username" class="label">
+                        <span class="label-text text-gray-200">Masukkan Nama</span>
+                    </label>
+                    <input id="username" name="username" type="text" required
+                        class="input input-bordered w-full rounded-lg bg-gray-200 text-gray-700"
+                        placeholder="Masukkan Nama Lengkap">
                 </div>
-                <div class="card-body">
-                    <div class="form-control mb-2">
-                        <label for="username">username</label>
-                        <input type="text" name="username" id="username" class="input input-sm input-bordered w-full">
-                    </div>
-                    <div class="form-control mb-2">
-                        <label for="password">password</label>
-                        <input type="password" name="password" id="password" class="input input-sm input-bordered w-full">
-                    </div>
-                    <div class="form-control">
-                        <button class="w-full p-2 bg-blue-400 text-white rounded-md">Sign-in</button>
-                    </div>
+
+                <!-- Input Password -->
+                <div class="form-control w-full">
+                    <label for="password" class="label">
+                        <span class="label-text text-gray-200">Masukkan Password</span>
+                    </label>
+                    <input id="password" name="password" type="password" required
+                        class="input input-bordered w-full rounded-lg bg-gray-200 text-gray-700"
+                        placeholder="Masukkan password">
                 </div>
+
+                <!-- Tombol Lanjutkan -->
+                <button type="submit"
+                    class="btn btn-primary w-full rounded-lg active:bg-blue-700 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300">
+                    Lanjutkan
+                </button>
             </form>
         </div>
     </div>
