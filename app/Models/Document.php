@@ -10,13 +10,6 @@ class Document extends Model
 {
     protected $guarded = ['id'];
 
-    protected $fillable = [
-        'type_id',
-        'unit_id',
-        'title',
-        'description',
-        'file_path',
-    ];
 
     public function type()
     {
