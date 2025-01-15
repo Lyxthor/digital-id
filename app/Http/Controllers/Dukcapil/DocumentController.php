@@ -33,7 +33,7 @@ class DocumentController extends Controller
                 return;
             }
             $documents = $citizen->documents;
-            return view('dukcapil.document.index', compact('documents', 'citizen'));
+            return view('dukcapil.document.index', compact('documents', 'citizen', 'types'));
         });
     }
 

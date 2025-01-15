@@ -21,7 +21,8 @@ class DocumentController extends Controller
             $user = Auth::user();
             $id = $user->userable_id;
             $documents = Document::ownership($id)->get();
-            return view('citizen.document.index', compact('documents'));
+            $types = DocumentType::select(['id', 'name'])->where('category', 'official')->get();
+            return view('citizen.document.index', compact('documents','types'));
         });
     }
     public function show($id)

@@ -2,45 +2,7 @@
 
 @section('title', 'Folder')
 
-@section('content')
-    <div class="container">
-        <h1 class="text-2xl font-bold mb-4">Folder Saya</h1>
 
-        {{-- Form create folder --}}
-        <form action="{{ route('citizen.folder.store') }}" method="POST" class="mb-4">
-            @csrf
-            @method('POST')
-            <div class="flex items-center gap-2">
-                <input type="text" name="folder_name" placeholder="Tambahkan Folder baru" class="input input-bordered w-full"
-                    required>
-                <button type="submit" class="btn btn-primary">Buat Folder</button>
-            </div>
-        </form>
-
-        {{-- Folder List --}}
-        <div class="grid grid-cols-4 gap-4">
-            @foreach ($folders as $folder)
-                <div class="card bg-case-100 shadow-xl">
-                    <div class="card-body">
-                        <h2 class="card-title">{{ $folder->name }}</h2>
-                        <p>List Folder: {{ $folder->created_at->format('d M Y') }}</p>
-                        <div class="card-actions justify-end space-x-2">
-                            <a href="{{ route('citizen.folder.show', $folder->id) }}" class="btn btn-sm btn-success">Lihat</a>
-                            <a href="{{ route('citizen.folder.edit', $folder->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                            <form action="{{ route('citizen.folder.destroy', $folder->id) }}" method="POST"
-                                onsubmit="return confirm('Yakin Ingin Mendelete folder ini?')" class="inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-error">Delete</button>
-                            </form>
-                            <a href="#" class="btn btn-sm btn-primary">Share</a>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-
-        </div>
-    </div>
 @section('content')
 <input type="hidden" name="csrf-token" value="{{ csrf_token() }}">
 <div class="container">
@@ -80,67 +42,50 @@
                                     {{ $folder->updated_at }}
                                 </td>
                                 <td>
-                                    <div x-data="{ isOpen: false }">
-                                        <button x-on:click="isOpen = true">
-                                            share
-                                        </button>
-                                        <div class="modal-container fixed w-screen z-50 h-screen top-0 left-0 bg-slate-800 bg-opacity-55"
-                                        x-show="isOpen"
-                                        x-transition.opacity>
-                                            <div id="modal{{ $index }}" class="h-full">
-                                                <div class="card bg-white mx-auto modal-body flex justify-center items-center w-1/3 p-2">
-                                                    <div class="card-body w-full">
-                                                        <form action="{{ route('citizen.token.store') }}" method="post">
-                                                            @csrf
-                                                            <input type="hidden" name="folder_id" id="folder_id" value="{{ $folder->id }}">
-                                                            <div class=
-                                                            "form-control mb-2">
-                                                                <label for="name">name (opsional)</label>
-                                                                <input type="text" name="name" id="name" class="input input-sm input-bordered w-full">
-                                                            </div>
-                                                            <div class=
-                                                            "form-control mb-2">
-                                                                <label for="expires_at">expires at (opsional)</label>
-                                                                <input type="datetime-local" name="expires_at" id="expires_at" class="input input-sm input-bordered w-full">
-                                                            </div>
-                                                            <div class="form-control mb-2">
-                                                                <label for="accessibility">accessibility</label>
-                                                                <select type="datetime-local" name="accessibility" id="accessibility" class="select select-sm select-bordered w-full">
-                                                                    <option value="public">public</option>
-                                                                    <option value="restricted">restricted</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="hidden w-full" id="authorized_citizen_container">
-                                                                <div class="w-full dropdown dropdown-bottom dropdown-end">
-                                                                    <label class="form-control w-full">
-                                                                        <div >
-                                                                            Member
-                                                                        </div>
-                                                                        <input type="text" id="memberSearchField" class="input input-sm input-bordered w-full" autocomplete="off">
-                                                                    </label>
-                                                                    <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-0 shadow overflow-hidden">
-                                                                        <div class="p-2 w-full" id="inputMembersContainer">
-
-                                                                        </div>
-                                                                        <div class="bg-slate-200 text-center italic py-3">
-                                                                            Search citizen will be displayed here
-                                                                        </div>
-                                                                    </ul>
-                                                                </div>
-                                                                <ul id="membersContainer" class="px-3 py-3 text-sm bg-base-200 rounded-md w-full mt-4">
-
-                                                                </ul>
-                                                            </div>
-                                                            <div>
-                                                                <button type="submit" class="btn btn-primary">submit</button>
-                                                            </div>
-
-                                                        </form>
-                                                    </div>
+                                    <button class="btn btn-sm" onclick="my_modal_{{ $index }}.showModal()">share</button>
+                                    <dialog id="my_modal_{{ $index }}" class="modal modal-bottom sm:modal-middle">
+                                        <div class="modal-box">
+                                            <h3 class="text-lg font-bold">Share Folder</h3>
+                                            <form action="{{ route('citizen.token.store') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="folder_id" id="folder_id" value="{{ $folder->id }}">
+                                                <div class="form-control mb-2 mt-2">
+                                                    <label for="name">Name (optional)</label>
+                                                    <input type="text" name="name" id="name" class="input input-sm input-bordered w-full mt-2">
                                                 </div>
-                                            </div>
+                                                <div class="form-control mb-2">
+                                                    <label for="expires_at">Expires At (optional)</label>
+                                                    <input type="datetime-local" name="expires_at" id="expires_at" class="mt-2 input input-sm input-bordered w-full">
+                                                </div>
+                                                <div class="form-control mb-2">
+                                                    <label for="accessibility">Accessibility</label>
+                                                    <select name="accessibility" id="accessibility" class="mt-1 select select-sm select-bordered w-full">
+                                                        <option value="public">Public</option>
+                                                        <option value="restricted">Restricted</option>
+                                                    </select>
+                                                </div>
+                                                <div class="hidden w-full" id="authorized_citizen_container">
+                                                    <div class="w-full dropdown dropdown-bottom dropdown-end">
+                                                        <label class="form-control w-full">
+                                                            <div>Member</div>
+                                                            <input type="text" id="memberSearchField" class=" mt-2 input input-sm input-bordered w-full" autocomplete="off">
+                                                        </label>
+                                                        <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-0 shadow overflow-hidden">
+                                                            <div class="p-2 w-full" id="inputMembersContainer"></div>
+                                                            <div class="bg-slate-200 text-center italic py-3">
+                                                                Search citizen will be displayed here
+                                                            </div>
+                                                        </ul>
+                                                    </div>
+                                                    <ul id="membersContainer" class="px-3 py-3 text-sm bg-base-200 rounded-md w-full mt-4"></ul>
+                                                </div>
+                                                <div class="modal-action">
+                                                    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                                                    <button class="btn btn-sm" onclick="my_modal_{{ $index }}.close()">Close</button>
+                                                </div>
+                                            </form>
                                         </div>
-                                    </div>
+                                    </dialog>
                                 </td>
                             </tr>
                         @endforeach
