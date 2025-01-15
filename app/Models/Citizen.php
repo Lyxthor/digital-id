@@ -20,6 +20,12 @@ class Citizen extends Model
     {
         return $query->with(['social_units.document'])->where('id', $id);
     }
-
-
+    public function folders()
+    {
+        return $this->hasMany(DocumentFolder::class, 'owner_id', 'id');
+    }
+    public function document_tokens()
+    {
+        return $this->belongsToMany(Citizen::class, 'token_authorized_citizens',  'citizen_id', 'token_id', 'id', 'id');
+    }
 }

@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2025-01-15T05:25:36.984Z",
+    "fileName": "app\\Models\\Citizen.php",
+    "content": "<?php\n\nnamespace App\\Models;\n\nuse Illuminate\\Database\\Eloquent\\Model;\nuse Illuminate\\Database\\Eloquent\\Relations\\MorphOne;\n\nclass Citizen extends Model\n{\n    protected $guarded = ['id'];\n    public function user() : MorphOne\n    {\n        return $this->morphOne(User::class, 'userable', 'userable_type', 'userable_id');\n    }\n    public function social_units()\n    {\n        return $this->belongsToMany(SocialUnit::class, 'social_unit_citizens', 'citizen_id', 'unit_id', 'id', 'id');\n    }\n    public function scopeDocuments($query, $id)\n    {\n        return $query->with(['social_units.document'])->where('id', $id);\n    }\n    public function folders()\n    {\n        return $this->hasMany()\n    }\n}\n",
+    "format": "php"
+  },
+  {
+    "timestamp": "2025-01-15T05:25:40.548Z",
+    "fileName": "app\\Models\\Citizen.php",
+    "content": "<?php\n\nnamespace App\\Models;\n\nuse Illuminate\\Database\\Eloquent\\Model;\nuse Illuminate\\Database\\Eloquent\\Relations\\MorphOne;\n\nclass Citizen extends Model\n{\n    protected $guarded = ['id'];\n    public function user() : MorphOne\n    {\n        return $this->morphOne(User::class, 'userable', 'userable_type', 'userable_id');\n    }\n    public function social_units()\n    {\n        return $this->belongsToMany(SocialUnit::class, 'social_unit_citizens', 'citizen_id', 'unit_id', 'id', 'id');\n    }\n    public function scopeDocuments($query, $id)\n    {\n        return $query->with(['social_units.document'])->where('id', $id);\n    }\n    public function folders()\n    {\n        return $this->hasMany(DocumentFolder)\n    }\n}\n",
+    "format": "php"
+  },
+  {
+    "timestamp": "2025-01-15T05:25:44.074Z",
+    "fileName": "app\\Models\\Citizen.php",
+    "content": "<?php\n\nnamespace App\\Models;\n\nuse Illuminate\\Database\\Eloquent\\Model;\nuse Illuminate\\Database\\Eloquent\\Relations\\MorphOne;\n\nclass Citizen extends Model\n{\n    protected $guarded = ['id'];\n    public function user() : MorphOne\n    {\n        return $this->morphOne(User::class, 'userable', 'userable_type', 'userable_id');\n    }\n    public function social_units()\n    {\n        return $this->belongsToMany(SocialUnit::class, 'social_unit_citizens', 'citizen_id', 'unit_id', 'id', 'id');\n    }\n    public function scopeDocuments($query, $id)\n    {\n        return $query->with(['social_units.document'])->where('id', $id);\n    }\n    public function folders()\n    {\n        return $this->hasMany(DocumentFolder::class, '')\n    }\n}\n",
+    "format": "php"
+  },
+  {
+    "timestamp": "2025-01-15T05:25:49.167Z",
+    "fileName": "app\\Models\\Citizen.php",
+    "content": "<?php\n\nnamespace App\\Models;\n\nuse Illuminate\\Database\\Eloquent\\Model;\nuse Illuminate\\Database\\Eloquent\\Relations\\MorphOne;\n\nclass Citizen extends Model\n{\n    protected $guarded = ['id'];\n    public function user() : MorphOne\n    {\n        return $this->morphOne(User::class, 'userable', 'userable_type', 'userable_id');\n    }\n    public function social_units()\n    {\n        return $this->belongsToMany(SocialUnit::class, 'social_unit_citizens', 'citizen_id', 'unit_id', 'id', 'id');\n    }\n    public function scopeDocuments($query, $id)\n    {\n        return $query->with(['social_units.document'])->where('id', $id);\n    }\n    public function folders()\n    {\n        return $this->hasMany(DocumentFolder::class, 'citizen_id', 'id');\n    }\n}\n",
+    "format": "php"
+  },
+  {
+    "timestamp": "2025-01-15T05:26:16.995Z",
+    "fileName": "app\\Models\\Citizen.php",
+    "content": "<?php\n\nnamespace App\\Models;\n\nuse Illuminate\\Database\\Eloquent\\Model;\nuse Illuminate\\Database\\Eloquent\\Relations\\MorphOne;\n\nclass Citizen extends Model\n{\n    protected $guarded = ['id'];\n    public function user() : MorphOne\n    {\n        return $this->morphOne(User::class, 'userable', 'userable_type', 'userable_id');\n    }\n    public function social_units()\n    {\n        return $this->belongsToMany(SocialUnit::class, 'social_unit_citizens', 'citizen_id', 'unit_id', 'id', 'id');\n    }\n    public function scopeDocuments($query, $id)\n    {\n        return $query->with(['social_units.document'])->where('id', $id);\n    }\n    public function folders()\n    {\n        return $this->hasMany(DocumentFolder::class, 'owner_id', 'id');\n    }\n}\n",
+    "format": "php"
+  }
+]

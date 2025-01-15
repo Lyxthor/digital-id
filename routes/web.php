@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Citizen\Document\DocumentTokenController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dukcapil\CitizenController as DukcapilCitizenController;
@@ -38,6 +39,19 @@ Route::resource('dukcapil/citizens', DukcapilCitizenController::class)
     "update"=>"dukcapil.citizen.update",
     "destroy"=>"dukcapil.citizen.destroy"
 ]);
+Route::resource('citizen/document/tokens', DocumentTokenController::class)
+->parameters(["tokens"=>"id"])
+->except(['show'])
+->names([
+    "index"=>"citizen.token.index",
+    "create"=>"citizen.token.create",
+    "edit"=>"citizen.token.edit",
+    "store"=>"citizen.token.store",
+    "update"=>"citizen.token.update",
+    "destroy"=>"citizen.token.destroy"
+]);
+Route::get('citizen/document/tokens/{token}', [DocumentTokenController::class, 'show'])
+->name('citizen.token.show')->middleware('token.authorized_citizen');
 Route::post('dukcapil/citizen/search', [DukcapilCitizenController::class, 'search'])
 ->name('dukcapil.citizen.search');
 Route::resource('dukcapil/documents', DukcapilDocumentController::class)
@@ -50,7 +64,6 @@ Route::resource('dukcapil/documents', DukcapilDocumentController::class)
     "store"=>"dukcapil.document.store",
     "update"=>"dukcapil.document.update",
     "destroy"=>"dukcapil.document.destroy"
-
 ]);
 Route::post('dukcapil/documents/generate', [DukcapilDocumentController::class, 'generate'])->name('dukcapil.document.generate');
 Route::resource('citizen/documents', CitizenDocumentController::class)
