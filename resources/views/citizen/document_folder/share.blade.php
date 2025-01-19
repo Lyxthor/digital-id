@@ -67,7 +67,13 @@
                                         </button>
                                         <button
                                         class="btn btn-xs rounded-sm btn-primary"
-                                        onclick="copyLink(`{{ route('citizen.token.show', ['token'=>$token->token]) }}`)">
+                                        x-on:click="navigator.clipboard.writeText(`{{ route('citizen.token.show', ['token'=>$token->token]) }}`)
+                                            .then(() => {
+                                                alert('Text copied to clipboard!');
+                                            })
+                                            .catch(err => {
+                                                console.error('Error copying text: ', err);
+                                            });">
                                             Copy link
                                         </button>
                                         <button
