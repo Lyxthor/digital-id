@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use App\Helpers\RequestHandler;
 use Illuminate\Support\Facades\Auth;
+use App\Rules\UniqueIfNotSame;
 
 class UpdateFolderRequest extends FormRequest
 {
@@ -25,15 +26,17 @@ class UpdateFolderRequest extends FormRequest
     public function rules(): array
     {
         $citizenId = Auth::user()->userable->id;
+        $folderId = $this->route('id');
         return
         [
             "name"=>"nullable|unique:document_folders,name,NULL,id,owner_id,$citizenId",
+            "name"=>["nullable", new UniqueIfNotSame('document_folders', 'name', $folderId)],
             "document_ids"=>"array",
             "document_ids.*"=>"exists:documents,id"
         ];
     }
     public function failedValidation(Validator $validator)
     {
-        RequestHandler::redirect($validator->errors()->toArray());
+        return RequestHandler::redirect($validator->errors()->toArray());
     }
 }

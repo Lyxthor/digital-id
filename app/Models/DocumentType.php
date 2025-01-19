@@ -11,8 +11,12 @@ class DocumentType extends Model
     {
         return $this->hasMany(Document::class, 'type_id', 'id');
     }
-    public function event_document_requirements()
+    // public function event_document_requirements()
+    // {
+    //     return $this->hasMany(EventDocumentRequirement::class, 'type_id', 'id');
+    // }
+    public function requisites()
     {
-        return $this->hasMany(EventDocumentRequirement::class, 'type_id', 'id');
+        return $this->belongsToMany(DocumentType::class, 'document_type_requisites', 'type_id', 'requisite_id', 'id', 'id');
     }
 }

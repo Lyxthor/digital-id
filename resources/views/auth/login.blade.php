@@ -6,7 +6,7 @@
     <div class="flex w-full max-w-4xl shadow-lg rounded-lg overflow-hidden">
         <!-- Bagian Kiri -->
         <div class="w-1/2 bg-white flex flex-col items-center justify-center p-6">
-            <img src="{{ asset('image/DIGIID 3.png') }}" alt="Logo" class="w-full h-auto mb-4">
+            <img src="{{ route('image.show', ['filename'=>'assets\banner.png']) }}" alt="Logo" class="w-full h-auto mb-4">
             <h1 class="text-2xl font-bold">DIGIID</h1>
             <p class="text-gray-600 mt-2">Digital Identitas Indonesia</p>
         </div>

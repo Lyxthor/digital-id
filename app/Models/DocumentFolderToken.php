@@ -16,4 +16,8 @@ class DocumentFolderToken extends Model
     {
         return $this->belongsToMany(Citizen::class, 'token_authorized_citizens', 'token_id', 'citizen_id', 'id', 'id');
     }
+    public function authorized_events()
+    {
+        return $this->belongsToMany(Event::class, 'token_authorized_events', 'token_id', 'event_id', 'id', 'id');
+    }
 }

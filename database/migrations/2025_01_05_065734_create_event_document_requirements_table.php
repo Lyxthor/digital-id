@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('event_document_requirements', function (Blueprint $table) {
-            $table->id();
+
             $table->unsignedBigInteger('event_id');
             $table->unsignedBigInteger('type_id');
 
@@ -26,7 +26,7 @@ return new class extends Migration
             ->on('document_types')
             ->onDelete('cascade')
             ->onUpdate('cascade');
-            $table->timestamps();
+        
         });
     }
 

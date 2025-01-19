@@ -6,6 +6,7 @@ use App\Helpers\RequestHandler;
 use App\Helpers\TextCipherHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Citizen\Token\StoreTokenRequest;
+use App\Http\Requests\Citizen\Token\UpdateTokenRequest;
 use App\Models\DocumentFolderToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -41,11 +42,12 @@ class DocumentTokenController extends Controller
                 $authorizedCitizens = $validData['authorized_citizens'];
                 $token->authorized_citizens()->sync($authorizedCitizens);
             }
+            return redirect()->back()->with('success', 'token created successfully');
         });
     }
-    public function update($id)
+    public function update(UpdateTokenRequest $req, $id)
     {
-        return RequestHandler::handle(function() use($id) {
+        return RequestHandler::handle(function() use($req, $id) {
             $token = DocumentFolderToken::find($id);
             if($token == null)
             {
@@ -53,16 +55,20 @@ class DocumentTokenController extends Controller
                 return;
             }
 
-            $validData = [];
-
-            $tokenData = Arr::only($validData, ['accessibility', 'expires_at']);
+            $validData = $req->validated();
+            $tokenData = Arr::only($validData, ['name', 'folder_id', 'accessibility', 'expires_at']);
             $token->update($tokenData);
 
-            if($token->accessibility == 'restricted' && isset($validData['authorized_citizes']))
+            if($token->accessibility == 'restricted' && isset($validData['authorized_citizens']))
             {
                 $authorizedCitizens = $validData['authorized_citizens'];
-                $token->citizens()->sync($authorizedCitizens);
+                $token->authorized_citizens()->sync($authorizedCitizens);
             }
+            else if($token->accessibility == 'public' && $token->authorized_citizens->count() > 0)
+            {
+                $token->authorized_citizens()->sync([]);
+            }
+            return redirect()->back()->with('success', 'token updated successfully');
 
         });
     }
@@ -80,8 +86,20 @@ class DocumentTokenController extends Controller
             $documents = $folder->documents;
 
             return view('citizen.document_folder.show', compact('folder', 'documents'));
-
-
+        });
+    }
+    public function destroy($id)
+    {
+        return RequestHandler::handle(function() use($id) {
+            $token = DocumentFolderToken::find($id);
+            if($token == null)
+            {
+                throw new Exception("Token not found", Response::HTTP_NOT_FOUND);
+                return;
+            }
+            $token->delete();
+            return back()
+            ->with('success', 'token deleted successfully');
         });
     }
 }

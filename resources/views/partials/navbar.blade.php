@@ -7,5 +7,4 @@
         </svg>
     </button>
     <h2 class="text-xl font-semibold">Dashboard</h2>
-
 </header>

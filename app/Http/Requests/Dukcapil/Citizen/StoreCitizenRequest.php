@@ -27,7 +27,6 @@ class StoreCitizenRequest extends FormRequest
         return
         [
             "nik"=>"required|unique:citizens,nik",
-            "no_kk"=>"required",
             "name"=>"required",
             "gender"=>"required|in:m,f",
             "birth_date"=>"required|date|before:now",
@@ -35,12 +34,19 @@ class StoreCitizenRequest extends FormRequest
             "blood_type"=>"nullable|in:".implode(",", config('citizen.blood_types')),
             "job"=>"nullable",
             "pp_img"=>"required|file|mimes:jpg,png,jpeg",
-            "current_address"=>"required"
+            "address"=>"required",
+            "village"=>"required",
+            "district"=>"required",
+            "regency"=>"required",
+            "province"=>"required",
+            "religion"=>"required",
+            "education"=>"required",
+            "marriage_status"=>"nullable|enum:belum kawin,kawin",
         ];
     }
     public function failedValidation(Validator $validator)
     {
 
-        RequestHandler::redirect($validator->errors()->toArray());
+        return RequestHandler::redirect($validator->errors()->toArray());
     }
 }

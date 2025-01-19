@@ -13,15 +13,26 @@ return new class extends Migration
     {
         Schema::create('dukcapils', function (Blueprint $table) {
             $table->id();
+            $table->string('nik')->unique();
             $table->string('name');
             $table->enum('gender', ['m', 'f']);
             $table->date('birth_date');
             $table->string('birth_place');
-            $table->text('current_address');
-            $table->string('pp_img_path');
+            $table->text('address');
+            $table->string('village');
+            $table->string('district');
+            $table->string('regency');
+            $table->string('province');
+            $table->string('blood_type')->nullable()->default('-');
+            $table->string('religion')->nullable()->default('katholik');
+            $table->string('education')->nullable()->default('belum/tidak sekolah');
+            $table->string('marriage_status')->nullable()->default('belum kawin');
+            $table->string('job')->nullable()->default('belum bekerja');
+            $table->string('pp_img_path')->default('no_profile.enc');
             $table->boolean('active_status');
             $table->date('start_date');
             $table->date('end_date')->nullable();
+            $table->string('province_authority');
             $table->timestamps();
         });
     }

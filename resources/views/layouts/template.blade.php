@@ -10,6 +10,7 @@
 </head>
 <body>
     <div id="memberships-data" data-collection='@json($memberships)'></div>
+    <div class="w-screen h-screen bg-white absolute top-0 left-0 z-50"></div>
     <form action="{{ route('dukcapil.document.store') }}" method="post" id="document-store-form">
         @csrf
         <input type="hidden" name="type_id" id="type_id" value="{{ $type->id }}">

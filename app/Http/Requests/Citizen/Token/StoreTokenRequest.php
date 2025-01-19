@@ -38,10 +38,11 @@ class StoreTokenRequest extends FormRequest
     {
         $validData = parent::validated();
         $validData['name'] = $this->name ?? Str::random(8);
+        $validData['authorized_citizens'] = $validData['authorized_citizens'] ?? [];
         return $validData;
     }
     public function failedValidation(Validator $validator)
     {
-        RequestHandler::redirect($validator->errors()->toArray());
+        return RequestHandler::redirect($validator->errors()->toArray());
     }
 }

@@ -18,12 +18,17 @@ return new class extends Migration
             $table->enum('gender', ['m', 'f']);
             $table->date('birth_date');
             $table->string('birth_place');
-            $table->text('current_address');
+            $table->text('address');
+            $table->string('village');
+            $table->string('district');
+            $table->string('regency');
+            $table->string('province');
             $table->string('blood_type')->nullable()->default('-');
             $table->string('religion')->nullable()->default('katholik');
             $table->string('education')->nullable()->default('belum/tidak sekolah');
-            $table->string('job')->nullable()->default('serabutan');
-            $table->string('pp_img_path');
+            $table->string('marriage_status')->nullable()->default('belum kawin');
+            $table->string('job')->nullable()->default('belum bekerja');
+            $table->string('pp_img_path')->default('no_profile.enc');
             $table->timestamps();
         });
     }
