@@ -61,10 +61,8 @@ class AuthController extends Controller
             $validData['request_password'] = bcrypt($validData['request_password']);
             $validData['token'] = $randomToken;
 
-            ClaimCitizenRequest::create($validData);
-            return redirect()
-            ->back()
-            ->with('success', "Claim request sent successfully");
+            $claimRequest = ClaimCitizenRequest::create($validData);
+            return view('auth.claim_request.show', compact('claimRequest'))->with('success', 'request sent successfully, copy the token to monitor request status');
         });
     }
 
