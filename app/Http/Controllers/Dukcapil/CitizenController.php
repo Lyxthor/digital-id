@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
+use App\Models\Document;
 
 class CitizenController extends Controller
 {
@@ -60,14 +61,17 @@ class CitizenController extends Controller
     public function show($id)
     {
         return RequestHandler::handle(function() use($id) {
-            $citizen = Citizen::find($id);
+            $citizen = Citizen::with(['claim_requests'=>function($query) {
+                $query->where('status', '!=', 'accepted');
+            }])->find($id);
             if($citizen==null)
             {
                 throw new Exception("Citizen not found", Response::HTTP_NOT_FOUND);
                 return;
             }
+            $documents = Document::ownership($citizen->id)->get();
 
-            return view('dukcapil.citizen.show', compact('citizen'));
+            return view('dukcapil.citizen.show', compact('citizen', 'documents'));
         });
     }
     public function store(StoreCitizenRequest $req)
@@ -137,22 +141,5 @@ class CitizenController extends Controller
             ->route('dukcapil.citizen.index')
             ->with('success', "citizen $citizen->nik updated successfully");
         });
-    }
-    private function storeImage($file) // Save and return the image path
-    {
-        $generateHashedName = function ($file) {
-            return hash('sha256', uniqid('', true)) . '.enc'; // Menggunakan ekstensi .enc untuk file terenkripsi
-        };
-
-        $fileContent = file_get_contents($file);
-        $encryptedContent = ImageCipherHelper::encrypt($fileContent); // Enkripsi konten file
-        $fileName = TextCipherHelper::encrypt($file, env('ENCRYPTION_KEY')); // Nama file hash dengan ekstensi
-        $fileName = $generateHashedName($file);
-        // Simpan file terenkripsi ke path tujuan
-        Storage::disk('public')->put("images/$fileName", $encryptedContent);
-
-        // Simpan nama file ke database
-        return $fileName;
-
     }
 }

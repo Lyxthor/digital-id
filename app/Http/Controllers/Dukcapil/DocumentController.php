@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dukcapil;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Helpers\RequestHandler;
+use App\Http\Controllers\ImageController;
 use App\Http\Requests\Dukcapil\Document\IndexDocumentRequest;
 use App\Http\Requests\Dukcapil\Document\StoreDocumentRequest;
 use App\Http\Requests\Dukcapil\Document\UpdateDocumentRequest;
@@ -65,6 +66,7 @@ class DocumentController extends Controller
 
             $templateName = implode("_", explode(" ", $type->name));
             $templateName = strtolower($templateName);
+            $members = collect($members);
 
             return view("templates.$templateName", compact('memberships', 'members', 'owner', 'type', 'additional'));
         });
@@ -104,7 +106,7 @@ class DocumentController extends Controller
 
 
             return redirect()
-            ->route('citizen.document.index')
+            ->route('dukcapil.citizen.show', ['id'=>$socialUnit->owner_id])
             ->with('success', 'document created successfully');
         });
     }
@@ -139,10 +141,9 @@ class DocumentController extends Controller
                 throw new Exception("Document not found", Response::HTTP_NOT_FOUND);
                 return;
             }
+            $types = DocumentType::select(['id', 'name'])->where('category', 'official')->get();
 
-            $types = DocumentType::select(['id', 'name'])->get();
-
-            return view('dukcapil.document.show', compact('document'));
+            return view('dukcapil.document.edit', compact('document'));
         });
     }
 
@@ -159,14 +160,15 @@ class DocumentController extends Controller
                 return;
             }
 
+
             $validData = $req->validated();
-            $citizen = $document->citizen;
+            $citizenId = $document->unit_owner->owner_id;
             // save image logic here
             $document->update($validData);
 
             return redirect()
-            ->route('dukcapil.document.index')
-            ->with('success', "Document $document->type->name for citizen $citizen->nik updated successfully");
+            ->route('dukcapil.citizen.show', ['id'=>$citizenId])
+            ->with('success', 'document updated successfully');
         });
     }
 
@@ -183,12 +185,13 @@ class DocumentController extends Controller
                 return;
             }
 
-            $citizen = $document->citizen;
+            ImageController::destroy($document->filename);
+            $citizenId = $document->unit_owner->owner_id;
             $document->delete();
 
             return redirect()
-            ->route('dukcapil.document.index')
-            ->with('success', "Document $document->type->name for citizen $citizen->nik deleted");
+            ->route('dukcapil.citizen.show', ['id'=>$citizenId])
+            ->with('success', 'document deleted successfully');
         });
     }
 }

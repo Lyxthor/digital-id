@@ -2,5 +2,5 @@
 
 return
 [
-    "blood_types"=>['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
+    "blood_types"=>['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', '-']
 ];

@@ -46,14 +46,13 @@
                                 <div class="label">
                                     <span class="label-text">Owner</span>
                                 </div>
-                                <input type="text" name="owner_id" id="owner_id" class="input input-bordered w-full">
+                                <input type="text" id="ownerSearchField" class="input input-bordered w-full" autocomplete="off">
                             </label>
-                            <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow">
-                                <li><a>Item 1</a></li>
-                                <li><a>Item 2</a></li>
+                            <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-sm z-[1] w-full p-2 shadow" id="inputOwnerContainer">
+
                             </ul>
                         </div>
-                        <ul id="" class="px-3 py-3 text-sm bg-base-200 rounded-md w-full mt-4">
+                        <ul id="ownerContainer" class="px-3 py-3 text-sm bg-base-200 rounded-md w-full mt-4" >
 
                         </ul>
                         <div class="w-full dropdown dropdown-bottom dropdown-end">
@@ -63,7 +62,7 @@
                                 </div>
                                 <input type="text" id="memberSearchField" class="input input-bordered w-full" autocomplete="off">
                             </label>
-                            <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-0 shadow overflow-hidden">
+                            <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-sm z-[1] w-full p-0 shadow overflow-hidden">
                                 <div class="p-2 w-full" id="inputMembersContainer">
 
                                 </div>
@@ -77,7 +76,7 @@
                         </ul>
                     </div>
                     <div class="card-actions justify-end">
-                        <button class="btn btn-primary">Buy Now</button>
+                        <button class="btn btn-primary">Simpan Perubahan</button>
                     </div>
                 </form>
             </div>
@@ -86,50 +85,99 @@
 </div>
 <script>
     const inputMembersContainer = document.getElementById("inputMembersContainer")
+    const inputOwnerContainer = document.getElementById("inputOwnerContainer")
     const memberSearchField = document.getElementById("memberSearchField");
+    const ownerSearchField = document.getElementById("ownerSearchField");
     const membersContainer = document.getElementById("membersContainer");
     const memberAddButtons = document.querySelectorAll('.memberAddButton');
-    console.log(memberSearchField)
 
     const searchInterval = 500;
     let searchTimeout = null;
     let members = []
+    let memberList = []
+    let owner = []
 
-    // memberAddButtons.forEach((el)=>{
-    //     el.addEventListener('click', ()=>{
-    //         addMember();
-    //         document.activeElement.blur()
-    //     })
-    // })
+    HideContainer(membersContainer, memberList);
+    HideContainer(ownerContainer, owner)
     memberSearchField.addEventListener('input', ()=>{
         if(searchTimeout!=null) clearTimeout(searchTimeout);
-
-        searchTimeout = setTimeout(searchCitizen, searchInterval);
+        searchTimeout = setTimeout(()=>{searchCitizen('member')}, searchInterval);
     })
-    function addMember(data,index)
+    ownerSearchField.addEventListener('input', ()=>{
+        if(searchTimeout!=null) clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(()=>{searchCitizen('owner')}, searchInterval);
+    })
+    function addOwner(data,index)
     {
+        if(owner.length > 0)
+            removeOwner();
         const newLi = document.createElement('li')
         newLi.setAttribute('class', "p-3 rounded-md")
+        newLi.setAttribute('id', `ownerList`)
         newLi.innerHTML+=`
         <div class="flex items-center justify-between">
-            <input type='hidden' name='memberships[${index}][id]' value='${data.id}'>
+            <input type='hidden' name='owner_id' value='${data.id}'>
             <div>
                 <div class='font-semibold'>${data.name}</div>
                 <div class='font-thin text-xs'>${data.nik}</div>
             </div>
-            <div class="join text-black">
-                <label class="input input-sm input-bordered flex items-center gap-2 join-item">
-                    <span class="font-semibold">Role</span>
-                    <input type="text" name='memberships[${index}][role]' class="grow text-xs text-slate-600" placeholder="NA" />
-                </label>
-                <button type="button" class="btn btn-sm btn-error aspect-square join-item">
+            <div class="text-black">
+                <button type="button" class="btn btn-sm btn-error aspect-square join-item" onclick="removeOwner()">
                     x
                 </button>
             </div>
         </div>`
-        membersContainer.append(newLi);
+        owner.push(data);
+        ownerContainer.append(newLi);
+        HideContainer(ownerContainer, owner);
+        addMember(data,index);
+
     }
-    function searchCitizen()
+    function removeOwner()
+    {
+        document.getElementById(`ownerList`).remove();
+        removeMemberFromList(owner[0].id)
+        owner = [];
+        HideContainer(ownerContainer, owner);
+    }
+    function addMember(data,index)
+    {
+        let check = memberList.filter((m)=>m.id === data.id)
+        if(check.length === 0)
+        {
+            memberList.push(data)
+            const newLi = document.createElement('li')
+            newLi.setAttribute('class', "p-3 rounded-md")
+            newLi.setAttribute('id', `membershipList${data.id}`)
+            newLi.innerHTML+=`
+            <div class="flex items-center justify-between">
+                <input type='hidden' name='memberships[${index}][id]' value='${data.id}'>
+                <div>
+                    <div class='font-semibold'>${data.name}</div>
+                    <div class='font-thin text-xs'>${data.nik}</div>
+                </div>
+                <div class="join text-black">
+                    <label class="input input-sm input-bordered flex items-center gap-2 join-item">
+                        <span class="font-semibold">Role</span>
+                        <input type="text" name='memberships[${index}][role]' class="grow text-xs text-slate-600" placeholder="NA" />
+                    </label>
+                    <button type="button" class="btn btn-sm btn-error aspect-square join-item" onclick="removeMemberFromList(${data.id})">
+                        x
+                    </button>
+                </div>
+            </div>`
+            membersContainer.append(newLi);
+            HideContainer(membersContainer, memberList);
+        }
+    }
+    function removeMemberFromList(id)
+    {
+        memberList = memberList.filter(m=>m.id!==id);
+        HideContainer(membersContainer, memberList);
+        document.getElementById(`membershipList${id}`).remove();
+        if(owner[0].id === id) removeOwner();
+    }
+    function searchCitizen(type)
     {
         const limit = 4;
         const formData = new FormData();
@@ -145,32 +193,65 @@
         })
         .then(response => response.json())
         .then(data => {
-            members = data.citizens;
-            appendData();
+            appendData(data, type);
         })
         .catch(err => {
             console.error('Error capturing content:', err);
         });
     }
-    function appendData()
+    function appendData(data, type)
     {
-        inputMembersContainer.innerHTML = '';
-        members.forEach((m, i) => {
+        if(type === 'member')
+        {
+            inputMembersContainer.innerHTML = '';
+            members = data.citizens;
+            members.forEach((m, i) => {
 
-            const newLi = document.createElement('li')
-            const button = document.createElement('button')
-            button.setAttribute('type', 'button')
-            button.addEventListener('click', ()=>{
-                addMember(m, i);
-                document.activeElement.blur()
+                const newLi = document.createElement('li')
+                const button = document.createElement('button')
+                button.setAttribute('type', 'button')
+                button.addEventListener('click', ()=>{
+                    addMember(m, i);
+                    document.activeElement.blur()
+                })
+                // newLi.setAttribute('class', "flex justify-between items-center py-2")
+                button.innerHTML+=`
+                    <div class='font-semibold'>${m.name}</div>
+                    <div class='font-thin text-xs'>${m.nik}</div>`
+                newLi.append(button)
+                inputMembersContainer.append(newLi);
             })
-            // newLi.setAttribute('class', "flex justify-between items-center py-2")
-            button.innerHTML+=`
-                <div class='font-semibold'>${m.name}</div>
-                <div class='font-thin text-xs'>${m.nik}</div>`
-            newLi.append(button)
-            inputMembersContainer.append(newLi);
-        })
+        }
+        else if(type == 'owner')
+        {
+            data.citizens.forEach((m, i) => {
+
+                const newLi = document.createElement('li')
+                const button = document.createElement('button')
+                button.setAttribute('type', 'button')
+                button.addEventListener('click', ()=>{
+                    addOwner(m, i);
+                    document.activeElement.blur()
+                })
+                // newLi.setAttribute('class', "flex justify-between items-center py-2")
+                button.innerHTML+=`
+                    <div class='font-semibold'>${m.name}</div>
+                    <div class='font-thin text-xs'>${m.nik}</div>`
+                newLi.append(button)
+                inputOwnerContainer.append(newLi);
+            })
+        }
+    }
+    function HideContainer(container, list)
+    {
+        if(list.length === 0)
+        {
+            container.classList.add('hidden');
+        }
+        else
+        {
+            container.classList.remove('hidden');
+        }
     }
 </script>
 @endsection

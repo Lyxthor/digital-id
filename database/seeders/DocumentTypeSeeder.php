@@ -40,6 +40,27 @@ class DocumentTypeSeeder extends Seeder
             "ownership_count"=>"multi",
             "membership_count"=>"multi",
             "member_ownership"=>"all"
+        ],
+        [
+            "name"=>"Ijazah SD",
+            "category"=>"custom",
+            "ownership_count"=>"mono",
+            "membership_count"=>"mono",
+            "member_ownership"=>"all"
+        ],
+        [
+            "name"=>"Ijazah SMP",
+            "category"=>"custom",
+            "ownership_count"=>"mono",
+            "membership_count"=>"mono",
+            "member_ownership"=>"all"
+        ],
+        [
+            "name"=>"Ijazah SMK/SMA",
+            "category"=>"custom",
+            "ownership_count"=>"mono",
+            "membership_count"=>"mono",
+            "member_ownership"=>"all"
         ]
     ];
     public function run(): void

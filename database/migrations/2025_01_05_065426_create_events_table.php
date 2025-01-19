@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('title');
             $table->text('desc');
             $table->string('banner_img_path')->nullable();
             $table->unsignedBigInteger('author_id');
+            $table->datetime('submit_deadline');
+            $table->datetime('access_expires_at');
             $table->foreign('author_id')
             ->references('id')
-            ->on('users')
+            ->on('citizens')
             ->onDelete('cascade')
             ->onUpdate('cascade');
             $table->timestamps();

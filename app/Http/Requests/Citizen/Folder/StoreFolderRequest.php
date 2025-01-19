@@ -39,6 +39,6 @@ class StoreFolderRequest extends FormRequest
     }
     public function failedValidation(Validator $validator)
     {
-        RequestHandler::redirect($validator->errors()->toArray());
+        return RequestHandler::redirect($validator->errors()->toArray());
     }
 }

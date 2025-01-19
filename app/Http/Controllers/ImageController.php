@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Helpers\ImageCipherHelper;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\TextCipherHelper;
+use Illuminate\Support\Facades\File;
 
 class ImageController extends Controller
 {
@@ -18,10 +19,11 @@ class ImageController extends Controller
             dd($filePath);
             abort(404, 'File not found.');
         }
+        $mime = File::mimeType(Storage::disk('public')->path($filePath));
 
         // Baca dan dekripsi konten file
         $encryptedContent = Storage::disk('public')->get($filePath);
-        $decryptedContent = ImageCipherHelper::decrypt($encryptedContent);
+        $decryptedContent = $mime == "text/plain" ? ImageCipherHelper::decrypt($encryptedContent) : $encryptedContent;
 
         // Tentukan MIME type berdasarkan ekstensi file
         $mimeType = 'image/' . pathinfo($filename, PATHINFO_EXTENSION);
@@ -87,5 +89,17 @@ class ImageController extends Controller
         // Simpan nama file ke database
         return $fileName;
 
+    }
+    public static function destroy($filename)
+    {
+        $filePath = 'images/'.$filename;
+
+        // Pastikan file ada
+        if (!Storage::disk('public')->exists($filePath)) {
+            dd($filePath);
+            abort(404, 'File not found.');
+        }
+
+        Storage::disk('public')->delete($filePath);
     }
 }

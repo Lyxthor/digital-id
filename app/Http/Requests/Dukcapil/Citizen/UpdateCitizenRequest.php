@@ -27,8 +27,7 @@ class UpdateCitizenRequest extends FormRequest
         $id = $this->route('id');
         return
         [
-            "nik"=>["required", new UniqueIfNotSame("citizens", "nik", $id)],
-            "no_kk"=>"required",
+            "nik"=>["required", new UniqueIfNotSame('citizens', 'id', $id)],
             "name"=>"required",
             "gender"=>"required|in:m,f",
             "birth_date"=>"required|date|before:now",
@@ -36,12 +35,18 @@ class UpdateCitizenRequest extends FormRequest
             "blood_type"=>"nullable|in:".implode(",", config('citizen.blood_types')),
             "job"=>"nullable",
             "pp_img"=>"nullable|file|mimes:jpg,png,jpeg",
-            "current_address"=>"required"
+            "address"=>"required",
+            "village"=>"required",
+            "district"=>"required",
+            "regency"=>"required",
+            "province"=>"required",
+            "religion"=>"required",
+            "education"=>"required",
+            "marriage_status"=>"nullable|enum:belum kawin,kawin",
         ];
     }
     public function failedValidation(Validator $validator)
     {
-
-        RequestHandler::redirect($validator->errors()->toArray());
+        return RequestHandler::redirect($validator->errors()->toArray());
     }
 }

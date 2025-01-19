@@ -22,9 +22,15 @@ class TokenAuthorizedCitizen
         $citizen = Auth::user()->userable;
         $token = $request->route('token');
         $token = DocumentFolderToken::with('authorized_citizens')->where('token', $token)->get();
+
+
         if($token->isNotEmpty())
         {
             $token = $token->first();
+            if($token->folder->owner_id == $citizen->id)
+            {
+                return $next($request);
+            }
             if($token->expires_at == null)
             {
                 if($token->accessibility == 'restricted')
@@ -43,6 +49,8 @@ class TokenAuthorizedCitizen
             {
                 $expiredTime = Carbon::parse($token->expires_at);
                 $notExpiresYet = Carbon::now()->lte($expiredTime);
+
+
                 if($notExpiresYet)
                 {
                     if($token->accessibility == 'restricted')

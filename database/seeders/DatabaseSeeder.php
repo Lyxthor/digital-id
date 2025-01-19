@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(DocumentTypeSeeder::class);
         $this->call(CitizenSeeder::class);
+        $this->call(DukcapilSeeder::class);
     }
 }

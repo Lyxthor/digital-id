@@ -119,6 +119,18 @@ class DocumentFolderController extends Controller
             ->with('success', 'Documents folder updated successfully');
         });
     }
+    public function share($id)
+    {
+        return RequestHandler::handle(function() use($id) {
+            $folder = DocumentFolder::with(['documents'])->find($id);
+            if($folder == null)
+            {
+                throw new Exception("Folder not found", Response::HTTP_NOT_FOUND);
+                return;
+            }
+            return view('citizen.document_folder.share', compact('folder'));
+        });
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -136,7 +148,7 @@ class DocumentFolderController extends Controller
             $folder->delete();
 
             return redirect()
-            ->route('citizen.document_folder.index')
+            ->route('citizen.folder.index')
             ->with('success', 'Documents folder deleted successfully');
         });
     }

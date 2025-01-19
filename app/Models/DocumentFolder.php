@@ -17,12 +17,15 @@ class DocumentFolder extends Model
     {
         return $this->belongsTo(Citizen::class, 'owner_id');
     }
-  
+
     protected $guarded = ['id'];
 
     public function documents()
     {
         return $this->belongsToMany(Document::class, 'document_folder_assignments', 'folder_id', 'document_id', 'id', 'id');
-
+    }
+    public function tokens()
+    {
+        return $this->hasMany(DocumentFolderToken::class, 'folder_id', 'id');
     }
 }

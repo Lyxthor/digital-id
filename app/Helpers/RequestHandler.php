@@ -1,6 +1,8 @@
 <?php
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Auth;
+
 class RequestHandler
 {
     public static function handle(callable $func)
@@ -9,13 +11,15 @@ class RequestHandler
         {
             return $func();
         }
-        catch(\Exception $e)
+        catch(\Throwable $e)
         {
-            RequestHandler::redirect($e->getMessage());
+            return RequestHandler::redirect($e->getMessage());
         }
     }
     public static function redirect($messages)
     {
-        dd($messages);
+        return redirect()
+        ->back()
+        ->with('error', $messages);
     }
 }

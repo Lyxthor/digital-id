@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="card-actions justify-end">
-                        <button class="btn btn-primary">Buy Now</button>
+                        <button class="btn btn-primary">Simpan Perubahan</button>
                     </div>
                 </form>
             </div>
