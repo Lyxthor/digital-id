@@ -11,53 +11,45 @@ use Illuminate\Support\Facades\Http;
 
 class ClaimCitizenRequestController extends Controller
 {
-    public function see($token)
+    public function checkPage()
     {
-        return RequestHandler::handle(function() use($token)
+        return RequestHandler::handle(function()
         {
-            $claimRequest = ClaimCitizenRequest::where('token', $token)->get();
-            if($claimRequest->isEmpty())
-            {
-                throw new Exception("Claim not found");
-                return;
-            }
-            $claimRequest = $claimRequest->first();
-            if($claimRequest->status == 'accepted')
-            {
-                return redirect()->route('login')->with('success', 'Request already accepted, login');
-            }
-            return view('auth.claim_request.see', compact('claimRequest'));
+            return view('auth.claim_request.check');
         });
     }
-    public function show(Request $request, $token)
+    public function check(Request $request)
     {
-        return RequestHandler::handle(function() use($request, $token)
+        return RequestHandler::handle(function() use($request)
         {
+            if(!isset($request->token) && $request->token != null)
+            {
+                return back()->with('error', 'token credentials invalid');
+            }
 
-            if(!isset($request->password))
+            $claimRequest = ClaimCitizenRequest::where('token', $request->token)->first();
+            if($claimRequest == null)
             {
-                return back()->with('error', 'your password is required');
+                return back()->with('error', 'token credentials invalid');
             }
-            $claimRequest = ClaimCitizenRequest::where('token', $token)->get();
-            if($claimRequest->isEmpty())
-            {
-                throw new Exception("Claim not found");
-                return;
-            }
-            $claimRequest = $claimRequest->first();
             if($claimRequest->status == 'accepted')
             {
                 return redirect()
                 ->route('login')
                 ->with('success', 'Request already accepted, login');
             }
-
             if(Hash::check($request->password, $claimRequest->request_password))
             {
                 return view('auth.claim_request.show', compact('claimRequest'));
             }
+
             return back()->with('error', 'Invalid credentials');
         });
+    }
+
+    public function show(Request $request)
+    {
+
     }
     public function cancel($token)
     {
