@@ -9,7 +9,9 @@
     <title>Digiid| @yield('title')</title>
 </head>
 <body class="bg-gray-100">
-    @include('partials.alerts')
+    <div class="absolute top-4 right-4">
+        @include('partials.alerts')
+    </div>
     <div class="flex h-screen">
         <!-- Sidebar -->
         <div

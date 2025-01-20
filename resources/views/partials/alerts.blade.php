@@ -1,5 +1,6 @@
-<div class="container w-full fixed top-8 z-20" id="alert-container">
-    <div class="flex justify-center w-1/2 mx-auto">
+
+<div class="container w-1/2 fixed top-8 right-8 z-20" id="alert-container">
+    <div class="flex justify-end w-full">
         @session('error')
             <div
             role="alert"
@@ -50,3 +51,5 @@
         @endsession
     </div>
 </div>
+
+
