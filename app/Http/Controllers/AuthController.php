@@ -29,15 +29,18 @@ class AuthController extends Controller
             if(Auth::attempt($credentials))
             {
                 $user = Auth::user();
-                if ($user->userable_type === 'citizen') {
-                    return redirect()
+                switch($user->userable_type)
+                {
+                    case 'citizen' :
+                        return redirect()
                         ->route('dashboard.citizen')
                         ->with('success', 'citizen logged in successfully');
-                }
-                if ($user->userable_type === 'dukcapil') {
-                    return redirect()
+                        break;
+                    case 'dukcapil' :
+                        return redirect()
                         ->route('dashboard.dukcapil')
                         ->with('success', 'dukcapil logged in successfully');
+                        break;
                 }
             }
             return back()
@@ -49,9 +52,10 @@ class AuthController extends Controller
         return RequestHandler::handle(function() use($req)
         {
             $validData = $req->validated();
-            $citizen = Citizen::where('nik', $validData['nik'])->first();
-            if ($citizen->user != null) {
-                return back()->with('error', 'This citizen already has a user');
+            $citizen = Citizen::where('nik', $validData['nik']);
+            if($citizen->has('user'))
+            {
+                return back()->with('error', 'This citizen already has user');
             }
             $randomToken = Str::random(12);
             $validData['status'] = 'waiting';
