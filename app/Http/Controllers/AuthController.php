@@ -35,10 +35,12 @@ class AuthController extends Controller
                         return redirect()
                         ->route('dashboard.citizen')
                         ->with('success', 'citizen logged in successfully');
+                        break;
                     case 'dukcapil' :
                         return redirect()
                         ->route('dashboard.dukcapil')
                         ->with('success', 'dukcapil logged in successfully');
+                        break;
                 }
             }
             return back()
