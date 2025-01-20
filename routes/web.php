@@ -33,8 +33,8 @@ Route::group(['middleware'=>['guest']], function() {
     Route::post('login', [AuthController::class, 'login'])->name('login.store');
     Route::get('register', [AuthController::class, 'registerPage'])->name('register');
     Route::post('register', [AuthController::class, 'register'])->name('register.store');
-    Route::get('register/{token}', [ClaimCitizenRequestController::class, 'see'])->name('register.see');
-    Route::post('register/{token}', [ClaimCitizenRequestController::class, 'show'])->name('register.show');
+    Route::get('register/check', [ClaimCitizenRequestController::class, 'checkPage'])->name('register.checkPage');
+    Route::post('register/check', [ClaimCitizenRequestController::class, 'check'])->name('register.check');
     Route::post('register/{token}/cancel', [ClaimCitizenRequestController::class, 'cancel'])->name('register.cancel');
     Route::post('register/{token}/resend', [ClaimCitizenRequestController::class, 'resend'])->name('register.resend');
 });

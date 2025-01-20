@@ -21,9 +21,15 @@
                             <a href="{{ route('login') }}" class="btn btn-success">Back to login</a>
                         </div>
                     </div>
-                    <form action="{{ route('register.show', ['token'=>$claimRequest->token]) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('register.check') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-6">
+                            <label class="form-control w-full">
+                                <div class="label">
+                                    <span class="label-text">Token</span>
+                                </div>
+                                <input type="text" name="token" id="token" class="input input-bordered w-full" autocomplete="off">
+                            </label>
                             <label class="form-control w-full">
                                 <div class="label">
                                     <span class="label-text">Password</span>

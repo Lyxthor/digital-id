@@ -52,8 +52,8 @@ class AuthController extends Controller
         return RequestHandler::handle(function() use($req)
         {
             $validData = $req->validated();
-            $citizen = Citizen::where('nik', $validData['nik']);
-            if($citizen->has('user'))
+            $citizen = Citizen::where('nik', $validData['nik'])->first();
+            if($citizen->user != null)
             {
                 return back()->with('error', 'This citizen already has user');
             }
