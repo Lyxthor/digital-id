@@ -7,13 +7,15 @@
     <div class="w-2/3">
         <div class="card bg-base-100 shadow-xl">
             <div class="card-body">
-                <div class="breadcrumbs w-full text-sm">
-                    <ul>
-                        <li><a>Home</a></li>
-                        <li><a>Documents</a></li>
-                        <li>Add Document</li>
+                    <ul class="flex justify-between w-full">
+                        <div class="breadcrumbs text-sm">
+                            <ul>
+                                <li><a>Home</a></li>
+                                <li><a>Data User</a></li>
+                            </ul>
+                        </div>
+                        <li><a href="{{ route('dukcapil.citizen.index') }}" class="btn btn-sm btn-primary">Kembali</a></li>
                     </ul>
-                </div>
                 <div class="grid grid-cols-2 justify-between items-end flex-wrap">
                     <div class="border h-full flex justify-center items-center">
                         <img src="{{ route('image.show',['filename'=>$citizen->pp_img_path]) }}" alt="" class="w-1/2 aspect-square object-cover">

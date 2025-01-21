@@ -22,9 +22,12 @@ class DocumentFolderController extends Controller
     public function index()
     {
         return RequestHandler::handle(function() {
-            $folders = DocumentFolder::all();
             $user = Auth::user();
-            $folders = $user->userable->folders;
+            $folders = $user->userable->folders();
+            $search = request()->query('search');
+            $folders = $folders->when($search, function ($query) use ($search) {
+                return $query->where('name', 'like', '%' . $search . '%');
+            })->paginate(5);
             return view('citizen.document_folder.index', compact('folders'));
         });
     }
