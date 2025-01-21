@@ -4,13 +4,17 @@
 
 @section('content')
 
-<div class="container mx-auto">
-    <div class="card mx-auto w-1/2 bg-base-100">
+<div class="container mx-auto px-4">
+    <div class="mb-4">
+        <a href="{{ route('citizen.event.index') }}" class="btn btn-sm btn-primary">Kembali</a>
+    </div>
+
+    <div class="card mx-auto max-w-lg bg-base-100">
         <div class="card-body">
-            <h1 class="font-bold">QR Code Scanner</h1>
-            <div class="font-thin text-xs">Point camera at QR code</div>
+            <h1 class="font-bold text-center">QR Code Scanner</h1>
+            <div class="font-thin text-xs text-center mb-4">Point camera at QR code</div>
             <div id="reader" class="w-full"></div>
-            <p class="text-xs">Scanned Result: <span id="result">None</span></p>
+            <p class="text-xs text-center mt-4">Scanned Result: <span id="result">None</span></p>
         </div>
     </div>
 </div>
@@ -23,7 +27,7 @@
         const onScanSuccess = (decodedText, decodedResult) => {
             console.log(`Decoded Text: ${decodedText}`);
             resultElement.innerText = decodedText;
-            window.location.href = decodedText
+            window.location.href = decodedText;
         };
 
         const onScanFailure = (error) => {

@@ -216,8 +216,8 @@ class EventController extends Controller
     public function destroy($id)
     {
         return RequestHandler::handle(function() use($id) {
-            $event = Auth::user()->userable->events->where('id', $id)->get();
-            if($event->isEmpty())
+            $event = Auth::user()->userable->events->where('id', $id)->first();
+            if(!$event)
             {
                 throw new Exception("Event not found", Response::HTTP_NOT_FOUND);
                 return;

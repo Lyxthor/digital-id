@@ -22,7 +22,11 @@ class CitizenController extends Controller
     public function index()
     {
         return RequestHandler::handle(function() {
-            $citizens = Citizen::all();
+            $citizens = Citizen::paginate(5);
+            $search = request()->query('search');
+            $citizens = Citizen::when($search, function ($query) use ($search) {
+                return $query->where('name', 'like', '%' . $search . '%');
+            })->paginate(5);
             $date = new Carbon();
             return view('dukcapil.citizen.index', compact('citizens', 'date'));
         });

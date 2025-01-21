@@ -8,22 +8,21 @@
         <div class="card bg-base-100 shadow-xl">
             <div class="card-body">
                 <div class="flex justify-between items-end flex-wrap">
-                    <div class="breadcrumbs w-full text-sm">
-                        <ul>
-                            <li><a>Home</a></li>
-                            <li><a>Documents</a></li>
-                            <li>Add Document</li>
-                        </ul>
-                    </div>
+                    <ul class="flex justify-between w-full">
+                        <div class="breadcrumbs text-sm">
+                            <ul>
+                                <li><a>Home</a></li>
+                                <li><a>Edit Penduduk</a></li>
+                            </ul>
+                        </div>
+                        <li><a href="{{ route('dukcapil.citizen.index') }}" class="btn btn-sm btn-primary">Kembali</a></li>
+                    </ul>
                     <div class="flex items-end gap-5">
                         <img src="{{ route('image.show',['filename'=>$citizen->pp_img_path]) }}" alt="" class="w-20 aspect-square rounded-full object-cover">
                         <div>
                             <h2 class="card-title font-bold">Citizen Form</h2>
                             <span class="text-xs mb-6 text-slate-500">Edit citizen {{ $citizen->nik }} to database</span>
                         </div>
-                    </div>
-                    <div>
-                        <a href="{{ route('dukcapil.citizen.index') }}" class="btn btn-success">Back to index</a>
                     </div>
                 </div>
                 <form action="{{ route('dukcapil.citizen.update', ['id'=>$citizen->id]) }}" method="POST" enctype="multipart/form-data">

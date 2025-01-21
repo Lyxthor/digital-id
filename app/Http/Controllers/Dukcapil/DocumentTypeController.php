@@ -16,7 +16,11 @@ class DocumentTypeController extends Controller
     public function index()
     {
         return RequestHandler::handle(function() {
-            $types = DocumentType::all();
+            $types = DocumentType::paginate(5);
+            $search = request()->query('search');
+            $types = DocumentType::when($search, function ($query) use ($search) {
+                return $query->where('name', 'like', '%' . $search . '%');
+            })->paginate(5);
             return view('dukcapil.document_type.index', compact('types'));
         });
     }

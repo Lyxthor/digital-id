@@ -1,6 +1,6 @@
 @extends('layouts.citizen')
 
-@section('title', 'Add Citizen')
+@section('title', 'Events')
 
 @section('content')
 <div class="container-fluid">
@@ -38,7 +38,21 @@
                             >
                                 Show
                             </a>
-                            <button class="btn btn-xs rounded-sm btn-error ">Delete</button>
+                            <button onclick="delete_modal_{{ $event->id }}.showModal()" class="btn btn-xs btn-error rounded-sm">Delete</button>
+                            <dialog id="delete_modal_{{ $event->id }}" class="modal modal-bottom sm:modal-middle">
+                                <div class="modal-box">
+                                    <h3 class="text-lg font-bold">Delete Event</h3>
+                                    <form action="{{ route('citizen.event.destroy', ['id' => $event->id]) }}" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                        <p class="mt-3">Are you sure you want to delete the event <span class="font-bold">{{ $event->title }}</span>?</p>
+                                        <div class="modal-action">
+                                            <button type="submit" class="btn btn-sm btn-primary">Yes</button>
+                                            <button type="button" class="btn btn-sm" onclick="delete_modal_{{ $event->id }}.close()">No</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </dialog>
                             <a
                             href="{{ route('citizen.event.share', ['id'=>$event->id]) }}"
                             class="btn btn-xs rounded-sm btn-secondary ">Share</a>

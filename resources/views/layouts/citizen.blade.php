@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>Digiidalgo | @yield('title')</title>
+    <title>Digiid | @yield('title')</title>
+
 </head>
 <body class="bg-gray-100">
-    @include('partials.alerts')
+    @include('partials.preloader')
+    <div class="absolute top-4 right-4">
+        @include('partials.alerts')
+    </div>
     <div class="flex h-screen">
         <!-- Sidebar -->
         <div
@@ -50,5 +54,11 @@
             </main>
         </div>
     </div>
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            preloader.style.display = 'none'; // Menyembunyikan preloader setelah halaman dimuat
+        });
+    </script>
 </body>
 </html>

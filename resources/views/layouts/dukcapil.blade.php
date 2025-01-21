@@ -6,9 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <title>Digiid| @yield('title')</title>
+    <title>Digiid | @yield('title')</title>
+
 </head>
 <body class="bg-gray-100">
+    @include('partials.preloader')
     <div class="absolute top-4 right-4">
         @include('partials.alerts')
     </div>
@@ -41,7 +43,7 @@
                     class="lg:hidden p-2 text-primary">
                     ☰
                 </button>
-                <h1 class="text-lg font-bold">DigiId</h1>
+                <h1 class="text-lg font-bold">Digital Identity</h1>
             </header>
             <div class="fake-header p-10 w-full">
 
@@ -53,5 +55,12 @@
             </main>
         </div>
     </div>
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            preloader.style.display = 'none'; // Menyembunyikan preloader setelah halaman dimuat
+        });
+    </script>
+
 </body>
 </html>
