@@ -8,7 +8,7 @@
             <img src="{{ asset('images/image.png') }}" alt="register" class="object-cover w-full h-full">
         </div>
         <div class="w-full p-8 lg:w-1/2">
-            <h2 class="text-2xl font-bold text-gray-700 text-center">LOGIN</h2>
+            <h2 class="text-2xl font-bold text-gray-700 text-center">REGISTER</h2>
             <p class="text-xl text-gray-600 text-center">DigiID</p>
             <form action="{{ route('register.store') }}" method="post" class="space-y-6">
                 @csrf
